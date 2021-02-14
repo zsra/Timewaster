@@ -1,4 +1,4 @@
-﻿namespace Timewaster.Core.Entities.Board
+﻿namespace Timewaster.Core.Entities.Boards
 {
     public class Tag : Entity
     {

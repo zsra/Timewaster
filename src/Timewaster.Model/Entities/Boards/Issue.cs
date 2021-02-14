@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Timewaster.Core.Entities.Accounts;
 using Timewaster.Core.Entities.Socials;
 
-namespace Timewaster.Core.Entities.Board
+namespace Timewaster.Core.Entities.Boards
 {
     public class Issue : Entity
     {

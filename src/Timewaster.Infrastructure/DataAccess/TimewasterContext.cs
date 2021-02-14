@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using Timewaster.Core.Entities.Accounts;
-using Timewaster.Core.Entities.Board;
+using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Entities.Socials;
 
-namespace Timewaster.Infrastructure.Data
+namespace Timewaster.Infrastructure.DataAccess
 {
     public class TimewasterContext : DbContext
     {

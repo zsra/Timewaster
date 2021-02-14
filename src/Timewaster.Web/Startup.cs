@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +14,8 @@ namespace Timewaster.Web
 {
     public class Startup
     {
+        private IServiceCollection _services;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,7 +23,31 @@ namespace Timewaster.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureDevelopmentService(IServiceCollection services)
+        {
+            //ConfigureInMemoryDatabases(services);
+            
+            ConfigureProductionServices(services);
+        }
+
+        private void ConfigureInMemoryDatabases(IServiceCollection services)
+        {
+            //services.AddDbContext<TimewasterContext>(c => c.UseInMemoryDatabase("Timewaster"));
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            //services.AddDbContext<TimewasterContext>(c =>
+            //  c.UseCosmos(Configuration.GetConnectionString("TimewasterConnection"), "Timewaster"));
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            ConfigureInMemoryDatabases(services);
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
