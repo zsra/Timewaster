@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timewaster.Infrastructure.DataAccess;
 
 namespace Timewaster.Web
 {
@@ -23,37 +24,14 @@ namespace Timewaster.Web
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureDevelopmentService(IServiceCollection services)
-        {
-            //ConfigureInMemoryDatabases(services);
-            
-            ConfigureProductionServices(services);
-        }
-
-        private void ConfigureInMemoryDatabases(IServiceCollection services)
-        {
-            //services.AddDbContext<TimewasterContext>(c => c.UseInMemoryDatabase("Timewaster"));
-        }
-
-        public void ConfigureProductionServices(IServiceCollection services)
-        {
-            //services.AddDbContext<TimewasterContext>(c =>
-            //  c.UseCosmos(Configuration.GetConnectionString("TimewasterConnection"), "Timewaster"));
-
-            ConfigureServices(services);
-        }
-
-        public void ConfigureTestingServices(IServiceCollection services)
-        {
-            ConfigureInMemoryDatabases(services);
-        }
-
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<TimewasterDbContext>(option =>
+               option.UseSqlServer(Configuration.GetConnectionString("TimewasterConnection")));
             services.AddControllersWithViews();
+            _services = services;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -63,7 +41,6 @@ namespace Timewaster.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -79,6 +56,7 @@ namespace Timewaster.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

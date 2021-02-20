@@ -6,9 +6,9 @@ using Timewaster.Core.Entities.Socials;
 
 namespace Timewaster.Infrastructure.DataAccess
 {
-    public class TimewasterContext : DbContext
+    public class TimewasterDbContext : DbContext
     {
-        public TimewasterContext(DbContextOptions<TimewasterContext> options) 
+        public TimewasterDbContext(DbContextOptions options) 
             : base(options)
         {
         }

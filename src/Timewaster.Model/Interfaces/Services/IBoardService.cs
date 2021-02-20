@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Timewaster.Core.Entities.Projects;
+using Timewaster.Core.ValueObjects;
 
 namespace Timewaster.Core.Interfaces.Services
 {

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Timewaster.Core.Entities.Boards;
 
 namespace Timewaster.Core.Entities.Projects
 {
@@ -8,5 +7,7 @@ namespace Timewaster.Core.Entities.Projects
     {
         public string RefernceId { get; set; }
         public string Name { get; set; }
+
+        public ICollection<Sprint> Sprints { get; set; }
     }
 }
