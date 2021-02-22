@@ -8,7 +8,7 @@ namespace Timewaster.Infrastructure.Configs
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.ToTable("Comment");
+            builder.ToTable("Comments");
 
             builder.Property(i => i.Id).UseHiLo("comment").IsRequired();
             builder.Property(ci => ci.Text).IsRequired().HasMaxLength(450);

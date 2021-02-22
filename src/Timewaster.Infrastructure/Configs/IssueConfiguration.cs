@@ -8,7 +8,7 @@ namespace Timewaster.Infrastructure.Configs
     {
         public void Configure(EntityTypeBuilder<Issue> builder)
         {
-            builder.ToTable("Issue");
+            builder.ToTable("Issues");
 
             builder.Property(i => i.Id).UseHiLo("issue").IsRequired();
             builder.Property(ci => ci.Title).IsRequired().HasMaxLength(50);

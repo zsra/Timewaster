@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Entities.Projects;
 
 namespace Timewaster.Infrastructure.Configs
@@ -8,7 +9,7 @@ namespace Timewaster.Infrastructure.Configs
     {
         public void Configure(EntityTypeBuilder<Sprint> builder)
         {
-            builder.ToTable("Sprint");
+            builder.ToTable("Sprints");
 
             builder.Property(i => i.Id).UseHiLo("sprint").IsRequired();
             builder.Property(ci => ci.CreatedAt).IsRequired();

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Timewaster.Core.ValueObjects
+namespace Timewaster.Core.Interfaces.Services
 {
-    public class Kanban
+    public interface IDashboardService
     {
     }
 }

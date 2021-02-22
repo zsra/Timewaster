@@ -8,7 +8,7 @@ namespace Timewaster.Core.Entities.Socials
     {
         public DateTimeOffset OpenedAt { get; set; }
         public DateTimeOffset ClosedAt { get; set; }
-        public User OpenBy { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public virtual User OpenBy { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

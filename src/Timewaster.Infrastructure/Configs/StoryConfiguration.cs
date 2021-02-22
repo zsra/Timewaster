@@ -4,14 +4,15 @@ using Timewaster.Core.Entities.Boards;
 
 namespace Timewaster.Infrastructure.Configs
 {
-    public class TagConfiguration : IEntityTypeConfiguration<Tag>
+    public class StoryConfiguration : IEntityTypeConfiguration<Story>
     {
-        public void Configure(EntityTypeBuilder<Tag> builder)
+        public void Configure(EntityTypeBuilder<Story> builder)
         {
-            builder.ToTable("Tags");
+            builder.ToTable("Stories");
 
-            builder.Property(i => i.Id).UseHiLo("tag").IsRequired();
+            builder.Property(i => i.Id).UseHiLo("story").IsRequired();
             builder.Property(ci => ci.Name).IsRequired().HasMaxLength(50);
+            builder.Property(ci => ci.Description).IsRequired(false).HasMaxLength(450);
             builder.Property(ci => ci.PartitionKey).IsRequired();
         }
     }

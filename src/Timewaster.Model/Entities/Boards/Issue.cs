@@ -8,16 +8,18 @@ namespace Timewaster.Core.Entities.Boards
 {
     public class Issue : Entity
     {
-        public ulong ReferenceNumber { get; set; }
+        public int ReferenceNumber { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
 
-        public Project Project { get; set; }
-        public Sprint Sprint { get; set; }
-        public Column Column { get; set; }
-        public ICollection<Tag> Tags { get; set; }
-        public ICollection<User> AssignedUser { get; set; }
-        public ICollection<Discussion> Discussions { get; set; }
+        public virtual Project Project { get; set; }
+        public virtual Sprint Sprint { get; set; }
+        public virtual Story Story { get; set; }
+        public virtual Issue ParentIssue { get; set; }
+        public virtual ICollection<Issue> SubIssues { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<User> AssignedUsers { get; set; }
+        public virtual ICollection<Discussion> Discussions { get; set; }
     }
 }

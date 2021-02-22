@@ -8,7 +8,7 @@ namespace Timewaster.Infrastructure.Configs
     {
         public void Configure(EntityTypeBuilder<Discussion> builder)
         {
-            builder.ToTable("Discussion");
+            builder.ToTable("Discussions");
 
             builder.Property(i => i.Id).UseHiLo("discussion").IsRequired();
             builder.Property(ci => ci.OpenedAt).IsRequired();
