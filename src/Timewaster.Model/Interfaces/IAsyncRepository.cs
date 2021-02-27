@@ -10,7 +10,7 @@ namespace Timewaster.Core.Interfaces
 {
     public interface IAsyncRepository<T> where T : Entity
     {
-        Task<T> GetByIdAsync(ServiceContext context, string id, CancellationToken cancellationToken = default);
+        Task<T> GetByIdAsync(ServiceContext context, int id, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<T>> ListAllAsync(ServiceContext context, CancellationToken cancellationToken = default);
         Task<T> AddAsync(ServiceContext context, T entity, CancellationToken cancellationToken = default);
         Task UpdateAsync(ServiceContext context, T entity, CancellationToken cancellationToken = default);
