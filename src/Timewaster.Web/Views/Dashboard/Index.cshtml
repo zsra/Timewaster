@@ -1,0 +1,14 @@
+﻿@model Timewaster.Web.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container">
+    @foreach (var project in Model.Projects)
+    {
+        <article>
+            <section>@project.Name</section>
+            <section>@project.RefernceId</section>
+        </article>
+    }
+</div>

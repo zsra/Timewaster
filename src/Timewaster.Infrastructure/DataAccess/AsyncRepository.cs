@@ -29,7 +29,7 @@ namespace Timewaster.Infrastructure.DataAccess
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetByIdAsync(ServiceContext context, string id, CancellationToken cancellationToken = default)
+        public async Task<TEntity> GetByIdAsync(ServiceContext context, int id, CancellationToken cancellationToken = default)
         {
             var keyValues = new object[] { id };
             return await _context.Set<TEntity>().FindAsync(keyValues, cancellationToken);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Timewaster.Web.Configurations
 {
     public static class ConfigureWebServices
     {
-        public static IServiceCollection AddWebServices(this IServiceCollection services)
+        public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
         {
             return services;
         }

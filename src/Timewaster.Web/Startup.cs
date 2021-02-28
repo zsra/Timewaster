@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timewaster.Infrastructure.DataAccess;
+using Timewaster.Web.Configurations;
 
 namespace Timewaster.Web
 {
@@ -26,6 +27,9 @@ namespace Timewaster.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCoreServices(Configuration);
+            services.AddWebServices(Configuration);
+
             services.AddDbContext<TimewasterDbContext>(option =>
                option.UseSqlServer(Configuration.GetConnectionString("TimewasterConnection")));
             services.AddControllersWithViews();
@@ -34,6 +38,7 @@ namespace Timewaster.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

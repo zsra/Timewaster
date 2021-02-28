@@ -133,6 +133,9 @@ namespace Timewaster.Infrastructure.Migrations
                     b.Property<int?>("SprintId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("StoryId")
                         .HasColumnType("int");
 
@@ -148,6 +151,8 @@ namespace Timewaster.Infrastructure.Migrations
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("SprintId");
+
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("StoryId");
 
@@ -392,6 +397,10 @@ namespace Timewaster.Infrastructure.Migrations
                         .WithMany("Issues")
                         .HasForeignKey("SprintId");
 
+                    b.HasOne("Timewaster.Core.Entities.Boards.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId");
+
                     b.HasOne("Timewaster.Core.Entities.Boards.Story", "Story")
                         .WithMany("Issues")
                         .HasForeignKey("StoryId");
@@ -401,6 +410,8 @@ namespace Timewaster.Infrastructure.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("Sprint");
+
+                    b.Navigation("Status");
 
                     b.Navigation("Story");
                 });

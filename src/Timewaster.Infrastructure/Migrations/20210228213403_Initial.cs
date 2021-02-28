@@ -136,6 +136,7 @@ namespace Timewaster.Infrastructure.Migrations
                     SprintId = table.Column<int>(type: "int", nullable: true),
                     StoryId = table.Column<int>(type: "int", nullable: true),
                     ParentIssueId = table.Column<int>(type: "int", nullable: true),
+                    StatusId = table.Column<int>(type: "int", nullable: true),
                     PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -157,6 +158,12 @@ namespace Timewaster.Infrastructure.Migrations
                         name: "FK_Issues_Sprints_SprintId",
                         column: x => x.SprintId,
                         principalTable: "Sprints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Issues_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -305,6 +312,11 @@ namespace Timewaster.Infrastructure.Migrations
                 column: "SprintId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Issues_StatusId",
+                table: "Issues",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Issues_StoryId",
                 table: "Issues",
                 column: "StoryId");
@@ -341,9 +353,6 @@ namespace Timewaster.Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
-
-            migrationBuilder.DropTable(
                 name: "Tags");
 
             migrationBuilder.DropTable(
@@ -354,6 +363,9 @@ namespace Timewaster.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Issues");
+
+            migrationBuilder.DropTable(
+                name: "Statuses");
 
             migrationBuilder.DropTable(
                 name: "Stories");

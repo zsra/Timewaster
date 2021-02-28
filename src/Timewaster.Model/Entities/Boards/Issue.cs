@@ -17,6 +17,7 @@ namespace Timewaster.Core.Entities.Boards
         public virtual Sprint Sprint { get; set; }
         public virtual Story Story { get; set; }
         public virtual Issue ParentIssue { get; set; }
+        public virtual Status Status { get; set; }
         public virtual ICollection<Issue> SubIssues { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<User> AssignedUsers { get; set; }
