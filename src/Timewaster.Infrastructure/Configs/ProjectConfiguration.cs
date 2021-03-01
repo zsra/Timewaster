@@ -12,6 +12,7 @@ namespace Timewaster.Infrastructure.Configs
 
             builder.Property(i => i.Id).UseHiLo("project").IsRequired();
             builder.Property(ci => ci.Name).IsRequired().HasMaxLength(50);
+            builder.Property(ci => ci.Description).IsRequired(false).HasMaxLength(450);
             builder.Property(ci => ci.RefernceId).UseIdentityColumn().IsRequired();
             builder.Property(ci => ci.PartitionKey).IsRequired();
         }

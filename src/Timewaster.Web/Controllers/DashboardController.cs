@@ -29,5 +29,24 @@ namespace Timewaster.Web.Controllers
 
             return View(viewModel);
         }
+
+        public async Task<IActionResult> ViewProject(int? projectId)
+        {
+            if (projectId == null) return NotFound();
+
+            var project = await _dashboardService.GetProject(new ServiceContext(), (int)projectId);
+            return View(project);
+        }
+
+        public async Task<IActionResult> CreateProject([Bind("Name", "Description")] Project project)
+        {
+            if (!string.IsNullOrEmpty(project.Name))
+            {
+                project.PartitionKey = "test";
+                project = await _dashboardService.CreateProjectAsync(new ServiceContext(), project);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(project);
+        }
     }
 }

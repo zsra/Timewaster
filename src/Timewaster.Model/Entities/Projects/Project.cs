@@ -8,6 +8,7 @@ namespace Timewaster.Core.Entities.Projects
     {
         public int RefernceId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
 
         public virtual ICollection<Sprint> Sprints { get; set; }
     }

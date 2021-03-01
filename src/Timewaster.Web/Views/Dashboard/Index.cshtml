@@ -3,12 +3,21 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<a class="text-dark" asp-action="CreateProject">+ Project</a>
 <div class="container">
     @foreach (var project in Model.Projects)
     {
-        <article>
-            <section>@project.Name</section>
-            <section>@project.RefernceId</section>
-        </article>
+        <div class="card custom-card" asp-action="ViewProject" asp-route-id="@project.Id">
+            <div class="card-body">
+                <h5 class="card-title">@project.Name</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@project.RefernceId</h6>
+                <p class="card-text card-desc-text">@project.Description</p>
+            </div>
+        </div>
     }
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

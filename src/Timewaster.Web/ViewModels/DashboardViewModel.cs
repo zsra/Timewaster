@@ -10,6 +10,5 @@ namespace Timewaster.Web.ViewModels
     public class DashboardViewModel
     {
         public List<Project> Projects { get; set; } = new List<Project>();
-        public List<User> Users { get; set; } = new List<User>();
     }
 }

@@ -1,0 +1,15 @@
+﻿.custom-card {
+    width: 18rem;
+    height: 12rem;
+    margin: 0.25rem;
+    display: inline-block;
+    box-shadow: 1px 1px 1px #aaaaaa;
+}
+
+.card-desc-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
