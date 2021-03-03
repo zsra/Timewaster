@@ -3,7 +3,7 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<a class="text-dark" asp-action="CreateProject">+ Project</a>
+<a class="text-dark" asp-controller="Project" asp-action="Create">+ Project</a>
 <div class="container">
     @foreach (var project in Model.Projects)
     {

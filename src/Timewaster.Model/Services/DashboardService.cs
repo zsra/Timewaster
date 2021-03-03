@@ -22,16 +22,6 @@ namespace Timewaster.Core.Services
             _logger = logger;
         }
 
-        public async Task<Project> CreateProjectAsync(ServiceContext context, Project project)
-        {
-            return await _projectRepository.AddAsync(context, project);
-        }
-
-        public async Task<Project> GetProject(ServiceContext context, int projectId)
-        {
-            return await _projectRepository.GetByIdAsync(context, projectId);
-        }
-
         public async Task<IReadOnlyList<Project>> GetProjects(ServiceContext context)
         {
             return await _projectRepository.ListAllAsync(context);

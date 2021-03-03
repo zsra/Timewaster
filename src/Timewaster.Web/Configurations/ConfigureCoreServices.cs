@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Timewaster.Core.Interfaces;
 using Timewaster.Core.Interfaces.Services;
 using Timewaster.Core.Services;
@@ -20,6 +16,7 @@ namespace Timewaster.Web.Configurations
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped<IBoardService, BoardService>();
             services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IPlanService, PlanService>();
 
             return services;
