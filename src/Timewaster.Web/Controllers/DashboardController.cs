@@ -10,7 +10,6 @@ using Timewaster.Web.ViewModels;
 
 namespace Timewaster.Web.Controllers
 {
-    [Route("[controller]/[action]")]
     public class DashboardController : Controller
     {
         private readonly IDashboardService _dashboardService;

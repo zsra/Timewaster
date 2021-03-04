@@ -3,17 +3,19 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<a class="text-dark" asp-controller="Project" asp-action="Create">+ Project</a>
+<a class="text-dark" asp-area="" asp-controller="Projects" asp-action="Create">+ Project</a>
 <div class="container">
     @foreach (var project in Model.Projects)
     {
-        <div class="card custom-card" asp-action="ViewProject" asp-route-id="@project.Id">
+    <a class="text-dark text-decoration-none" asp-area="" asp-controller="Projects" asp-action="View" asp-route-id="@project.Id">
+        <div class="card custom-card">
             <div class="card-body">
                 <h5 class="card-title">@project.Name</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@project.RefernceId</h6>
                 <p class="card-text card-desc-text">@project.Description</p>
             </div>
         </div>
+    </a>
     }
 </div>
 

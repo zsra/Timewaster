@@ -26,15 +26,5 @@ namespace Timewaster.Core.Services
         {
             return await _projectRepository.ListAllAsync(context);
         }
-
-        public async Task<User> GetUser(ServiceContext context, int userId)
-        {
-            return await _userRepository.GetByIdAsync(context, userId);
-        }
-
-        public async Task<IReadOnlyList<User>> GetUsers(ServiceContext context)
-        {
-            return await _userRepository.ListAllAsync(context);
-        }
     }
 }
