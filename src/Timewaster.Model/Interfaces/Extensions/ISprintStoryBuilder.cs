@@ -4,12 +4,12 @@ using Timewaster.Core.ValueObjects;
 
 namespace Timewaster.Core.Interfaces.Extensions
 {
-    public interface IRowBuilder
+    public interface ISprintStoryBuilder
     {
         Story Story { get; set; }
         IEnumerable<Status> Statuses { get; set; }
         IEnumerable<Issue> Issues { get; set; }
 
-        Row GetResult();
+        SprintStory GetResult();
     }
 }

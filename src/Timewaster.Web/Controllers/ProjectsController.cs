@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Entities.Projects;
@@ -24,10 +25,13 @@ namespace Timewaster.Web.Controllers
             if (id == null) return NotFound();
 
             Project project = await _projectService.GetProject(new ServiceContext(), (int)id);
-            
+            Sprint currentSprint = project.Sprints.FirstOrDefault();
+            project.Sprints.Remove(currentSprint);
+
             var projectViewModel = new ProjectViewModel
             {
                 ProjectName = project.Name,
+                CurrentSprint = currentSprint,
                 Sprints = new List<Sprint>(project.Sprints),
             };
             return View(projectViewModel);

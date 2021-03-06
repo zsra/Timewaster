@@ -39,7 +39,9 @@ namespace Timewaster.Core.Services
 
         public async Task<Project> GetProject(ServiceContext context, int projectId)
         {
-            return await _projectRepository.GetByIdAsync(context, projectId);
+            Project project = await _projectRepository.GetByIdAsync(context, projectId);
+            project.Sprints.OrderByDescending(s => s.CreatedAt);
+            return project;
         }
 
         public async Task<User> GetUser(ServiceContext context, int userId)

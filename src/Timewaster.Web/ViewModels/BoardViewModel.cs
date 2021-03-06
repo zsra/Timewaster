@@ -8,6 +8,6 @@ namespace Timewaster.Web.ViewModels
     {
         public string ProjectName { get; set; }
         public Sprint Sprint { get; set; }
-        public List<Row> Rows { get; set; } = new List<Row>();
+        public List<SprintStory> Rows { get; set; } = new List<SprintStory>();
     }
 }
