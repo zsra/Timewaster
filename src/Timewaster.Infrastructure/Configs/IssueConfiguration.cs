@@ -15,7 +15,7 @@ namespace Timewaster.Infrastructure.Configs
             builder.Property(ci => ci.ReferenceNumber).UseIdentityColumn().IsRequired();
             builder.Property(ci => ci.Description).IsRequired(false).HasMaxLength(450);
             builder.Property(ci => ci.PartitionKey).IsRequired();
-            builder.Property(ci => ci.CreatedAt).IsRequired();
+            builder.Property(ci => ci.CreatedAt).IsRequired().ValueGeneratedOnAdd();
         }
     }
 }

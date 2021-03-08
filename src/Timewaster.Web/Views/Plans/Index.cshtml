@@ -1,0 +1,27 @@
+﻿@model Timewaster.Web.ViewModels.PlanViewModel
+@{
+    ViewData["Title"] = "Planning";
+}
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Story</th>
+                @foreach (var status in Model.Statuses)
+                {
+                    <th scope="col">@status.Name</th>
+                }
+                <th scope="col">+</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model..SprintStories)
+            {
+
+            }
+            <tr>
+                <th scope="row">1</th>
+            </tr>
+    </table>
+</div>
