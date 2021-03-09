@@ -4,7 +4,10 @@
 }
 
 <div class="container">
-    <table class="table">
+    <div>
+
+    </div>
+    <table class="table kanban-table">
         <thead>
             <tr>
                 <th scope="col">Story</th>
@@ -16,12 +19,27 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.SprintStories)
+            @foreach (var sprintStory in Model.SprintStories)
             {
-
+            <tr>
+                <th scope="row">
+                    <div class="card story-card"></div>
+                </th>
+                @foreach (var status in Model.Statuses)
+                {
+                <th scope="row">
+                    @foreach (var item in sprintStory.GroupOfIssues)
+                    {
+                        <div class="card issue-card"></div>
+                    }
+                    <div class="card issue-empty-card">+</div>
+                </th>
+                }
+            </tr>
             }
             <tr>
-                <th scope="row">1</th>
+                <th scope="row"><div class="card story-empty-card"></div></th>
             </tr>
+        </tbody>
     </table>
 </div>
