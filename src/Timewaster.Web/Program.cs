@@ -18,7 +18,17 @@ namespace Timewaster.Web
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
-            var catalogContext = services.GetRequiredService<TimewasterDbContext>();
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            try 
+            {
+                var context = services.GetRequiredService<TimewasterDbContext>();
+                await TimewasterDbContextSeed.SeedAsync(context, loggerFactory);
+            } 
+            catch(Exception e)
+            {
+                var logger = loggerFactory.CreateLogger<Program>();
+                logger.LogError(e, "An error occurred seeding the DB.");
+            }
 
             host.Run();
         }

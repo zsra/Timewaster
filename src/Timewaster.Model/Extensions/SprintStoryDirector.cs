@@ -18,8 +18,8 @@ namespace Timewaster.Core.Extensions
         public void Construct(Story story, IEnumerable<Status> statuses, IEnumerable<Issue> issues)
         {
             _sprintStoryBuilder.Story = story;
-            _sprintStoryBuilder.Statuses = statuses;
-            _sprintStoryBuilder.Issues = issues;
+            _sprintStoryBuilder.Statuses = statuses ?? throw new NullReferenceException("statuses must be not null");
+            _sprintStoryBuilder.Issues = issues ?? throw new NullReferenceException("issues must be not null");
         }
     }
 }

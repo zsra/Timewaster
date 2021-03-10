@@ -20,7 +20,7 @@ namespace Timewaster.Web.Controllers
             _projectService = projectService;
         }
 
-        public async Task<IActionResult> View(int? id)
+        public async Task<IActionResult> Index(int? id)
         {
             if (id == null) return NotFound();
 

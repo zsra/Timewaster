@@ -1,5 +1,4 @@
 ﻿@model Timewaster.Web.ViewModels.ProjectViewModel
-
 @{
     ViewData["Title"] = Model.ProjectName;
 }
@@ -14,7 +13,7 @@
                     <h6>Sprints</h6>
                 </div>
                 <div class="col-sm">
-                    <h6>Add spring</h6>
+                    <a class="border-dark" asp-area="" asp-controller="Plans" asp-action="Index">&#43; Add spring</a>
                 </div>
             </div>
             <div class="list-group">

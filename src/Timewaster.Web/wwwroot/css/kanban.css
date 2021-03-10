@@ -3,17 +3,29 @@
 }
 
 .story-card {
-
+    width: 15rem;
+    height: 9rem;
+    margin: 0.25rem;
+    border: 1px solid #0094ff;
 }
 
 .story-empty-card {
-
+    width: 15rem;
+    height: 9rem;
+    margin: 0.25rem;
+    border: 1px solid #0094ff;
 }
 
 .issue-card {
-
+    width: 12rem;
+    height: 6rem;
+    margin: 0.25rem;
+    border: 1px solid #ff006e;
 }
 
 .issue-empty-card {
-
+    width: 12rem;
+    height: 6rem;
+    margin: 0.25rem;
+    border: 1px solid #ff006e;
 }

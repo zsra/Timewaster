@@ -23,22 +23,43 @@
             {
             <tr>
                 <th scope="row">
-                    <div class="card story-card"></div>
+                    <div class="card story-card">
+                        <div class="card-body">
+
+                        </div>
+                    </div>
                 </th>
                 @foreach (var status in Model.Statuses)
                 {
-                <th scope="row">
-                    @foreach (var item in sprintStory.GroupOfIssues)
+            <th scope="row">
+                @foreach (var item in sprintStory.GroupOfIssues)
+                {
+                    @if (item == sprintStory.GroupOfIssues.First())
                     {
-                        <div class="card issue-card"></div>
+                        <div class="card issue-empty-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Add issue</h5>
+                            </div>
+                        </div>
                     }
-                    <div class="card issue-empty-card">+</div>
-                </th>
+                    <div class="card issue-card">
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                }
+            </th>
                 }
             </tr>
             }
             <tr>
-                <th scope="row"><div class="card story-empty-card"></div></th>
+                <th scope="row">
+                    <div class="card story-empty-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Add story</h5>
+                        </div>
+                    </div>
+                </th>
             </tr>
         </tbody>
     </table>

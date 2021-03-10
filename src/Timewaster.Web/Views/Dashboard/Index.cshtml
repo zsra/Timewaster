@@ -7,7 +7,7 @@
 <div class="container">
     @foreach (var project in Model.Projects)
     {
-    <a class="text-dark text-decoration-none" asp-area="" asp-controller="Projects" asp-action="View" asp-route-id="@project.Id">
+    <a class="text-dark text-decoration-none" asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id="@project.Id">
         <div class="card custom-card">
             <div class="card-body">
                 <h5 class="card-title">@project.Name</h5>
