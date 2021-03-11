@@ -22,45 +22,46 @@
             @foreach (var sprintStory in Model.SprintStories)
             {
             <tr>
-                <th scope="row">
-                    <div class="card story-card">
-                        <div class="card-body">
-
-                        </div>
-                    </div>
-                </th>
-                @foreach (var status in Model.Statuses)
+                @if (sprintStory.Story == null)
                 {
-            <th scope="row">
-                @foreach (var item in sprintStory.GroupOfIssues)
-                {
-                    @if (item == sprintStory.GroupOfIssues.First())
-                    {
-                        <div class="card issue-empty-card">
+                    <th scope="row">
+                        <div class="card story-empty-card">
                             <div class="card-body">
-                                <h5 class="card-title">Add issue</h5>
+                                <h5 class="card-title">Add story</h5>
                             </div>
                         </div>
-                    }
-                    <div class="card issue-card">
-                        <div class="card-body">
-
-                        </div>
-                    </div>
+                    </th>
                 }
-            </th>
+                else
+                {
+                    <th scope="row">
+                        <div class="card story-card">
+                            <div class="card-body">
+                                <h5 class="card-title">@sprintStory.Story</h5>
+                            </div>
+                        </div>
+                    </th>
+                    @foreach (var item in sprintStory.GroupOfIssues)
+                    {
+                        <th scope="row">
+                            @if (item == sprintStory.GroupOfIssues.First())
+                            {
+                                <div class="card issue-empty-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Add issue</h5>
+                                    </div>
+                                </div>
+                            }
+                            <div class="card issue-card">
+                                <div class="card-body">
+
+                                </div>
+                            </div>
+                        </th>
+                    }
                 }
             </tr>
             }
-            <tr>
-                <th scope="row">
-                    <div class="card story-empty-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Add story</h5>
-                        </div>
-                    </div>
-                </th>
-            </tr>
         </tbody>
     </table>
 </div>
