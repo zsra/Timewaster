@@ -12,55 +12,63 @@ namespace Timewaster.Web.Controllers
 {
     public class PlansController : Controller
     {
-        private readonly IPlanService _planService;
+        private readonly IPlansService _plansService;
 
-        public PlansController(IPlanService planService)
+        public PlansController(IPlansService plansService)
         {
-            _planService = planService;
+            _plansService = plansService;
         }
 
         public async Task<IActionResult> Index()
         {
+            (Sprint sprint, IEnumerable<SprintStory> sprintStories ) = await _plansService.CreatePlan(new ServiceContext());
             PlanViewModel viewModel = new PlanViewModel {
-                SprintStories = new List<SprintStory>(await _planService.CreatePlan( new ServiceContext())),
-                Statuses = new List<Status>(await _planService.GetDefaultStatuses(new ServiceContext()))
+                Sprint = sprint,
+                SprintStories = new List<SprintStory>(sprintStories),
+                Statuses = new List<Status>(await _plansService.GetDefaultStatuses(new ServiceContext()))
             };
             return View(viewModel);
         }
 
-        public async Task<IActionResult> CreateSprint([Bind("CreatedAt", "ClosingAt")] Sprint sprint)
-        {
-            await _planService.CreateSprint(new ServiceContext(), sprint);
-            return RedirectToAction(nameof(Index));
-        }
-
         public async Task<IActionResult> CreateStory([Bind("Name, Description")] Story story)
         {
-            await _planService.CreateStory(new ServiceContext(), story);
+            await _plansService.CreateStory(new ServiceContext(), story);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> CreateIssue([Bind("Name, Description")] Issue issue)
         {
-            await _planService.CreateIssue(new ServiceContext(), issue);
+            await _plansService.CreateIssue(new ServiceContext(), issue);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> UpdateStory([Bind("Name, Description")] Story story)
+        {
+            await _plansService.UpdateStory(new ServiceContext(), story);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> UpdateIssue([Bind("Name, Description")] Issue issue)
+        {
+            await _plansService.UpdateIssue(new ServiceContext(), issue);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> DeleteSprint(int id)
         {
-            await _planService.DeleteSprint(new ServiceContext(), id);
+            await _plansService.DeleteSprint(new ServiceContext(), id);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> DeleteStory(int id)
         {
-            await _planService.DeleteStory(new ServiceContext(), id);
+            await _plansService.DeleteStory(new ServiceContext(), id);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> DeleteIssue(int id)
         {
-            await _planService.DeleteIssue(new ServiceContext(), id);
+            await _plansService.DeleteIssue(new ServiceContext(), id);
             return RedirectToAction(nameof(Index));
         }
     }

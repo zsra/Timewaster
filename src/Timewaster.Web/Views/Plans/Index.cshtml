@@ -10,7 +10,7 @@
     <table class="table kanban-table">
         <thead>
             <tr>
-                <th scope="col">Story</th>
+                <th scope="col">Story <span><a class="text-dark" asp-area="" asp-controller="Plans" asp-action="CreateStory">+ add story</a></span></th>
                 @foreach (var status in Model.Statuses)
                 {
                     <th scope="col">@status.Name</th>
@@ -22,43 +22,27 @@
             @foreach (var sprintStory in Model.SprintStories)
             {
             <tr>
-                @if (sprintStory.Story == null)
-                {
-                    <th scope="row">
-                        <div class="card story-empty-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Add story</h5>
-                            </div>
+                <th scope="row">
+                    <div class="card story-card">
+                        <div class="card-body">
+                            <h5 class="card-title">@sprintStory.Story.Name</h5>
+                            <p class="card-text card-desc-text">@sprintStory.Story.Description</p>
                         </div>
-                    </th>
+                    </div>
+                </th>
+                @foreach (var item in sprintStory.GroupOfIssues)
+                {
+                <th scope="row">
+                @if (item == sprintStory.GroupOfIssues.First())
+                {
+                    <a class="text-dark" asp-area="" asp-controller="Plans" asp-action="CreateIssue" asp-route-sprintid="@Model.Sprint.Id">+ add issue</a>
                 }
-                else
-                {
-                    <th scope="row">
-                        <div class="card story-card">
-                            <div class="card-body">
-                                <h5 class="card-title">@sprintStory.Story</h5>
-                            </div>
-                        </div>
-                    </th>
-                    @foreach (var item in sprintStory.GroupOfIssues)
-                    {
-                        <th scope="row">
-                            @if (item == sprintStory.GroupOfIssues.First())
-                            {
-                                <div class="card issue-empty-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Add issue</h5>
-                                    </div>
-                                </div>
-                            }
-                            <div class="card issue-card">
-                                <div class="card-body">
+                    <div class="card issue-card">
+                        <div class="card-body">
 
-                                </div>
-                            </div>
-                        </th>
-                    }
+                        </div>
+                    </div>
+                </th>
                 }
             </tr>
             }

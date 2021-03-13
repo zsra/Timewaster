@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timewaster.Core.Entities.Boards;
+using Timewaster.Core.Entities.Projects;
 
 namespace Timewaster.Infrastructure.DataAccess
 {
     public class TimewasterDbContextSeed
     {
         private static readonly string GLOBAL_PARTITION_KEY = "PK_GLOBAL";
+        private static readonly string LORUM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tempus hendrerit neque at porttitor. Vestibulum elementum velit odio, at volutpat enim euismod eu.";
 
         public static async Task SeedAsync(TimewasterDbContext context,
             ILoggerFactory loggerFactory, int? retry = 0)
@@ -23,6 +25,13 @@ namespace Timewaster.Infrastructure.DataAccess
                     await context.Statuses.AddRangeAsync(GetDefaultStatuses());
                     await context.SaveChangesAsync();
                 }
+#if DEBUG
+                if (!await context.Projects.AnyAsync())
+                {
+                    await context.Projects.AddRangeAsync(GetProjects());
+                    await context.SaveChangesAsync();
+                }
+#endif
             }
             catch( Exception e)
             {
@@ -38,10 +47,16 @@ namespace Timewaster.Infrastructure.DataAccess
         }
 
         private static IEnumerable<Status> GetDefaultStatuses() => new List<Status> {
-                new Status { Name = "To do", PartitionKey = GLOBAL_PARTITION_KEY },
-                new Status { Name = "In progress", PartitionKey = GLOBAL_PARTITION_KEY },
-                new Status { Name = "Testing", PartitionKey = GLOBAL_PARTITION_KEY },
-                new Status { Name = "Done", PartitionKey = GLOBAL_PARTITION_KEY },
-            };
+            new Status { Name = "To do", PartitionKey = GLOBAL_PARTITION_KEY },
+            new Status { Name = "In progress", PartitionKey = GLOBAL_PARTITION_KEY },
+            new Status { Name = "Testing", PartitionKey = GLOBAL_PARTITION_KEY },
+            new Status { Name = "Done", PartitionKey = GLOBAL_PARTITION_KEY },
+        };
+
+        private static IEnumerable<Project> GetProjects() => new List<Project> {
+            new Project { Name = "Project #1", Description = LORUM_IPSUM, PartitionKey = GLOBAL_PARTITION_KEY },
+            new Project { Name = "Project #2", Description = LORUM_IPSUM, PartitionKey = GLOBAL_PARTITION_KEY },
+            new Project { Name = "Project #3", Description = LORUM_IPSUM, PartitionKey = GLOBAL_PARTITION_KEY },
+        };
     }
 }

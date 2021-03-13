@@ -7,9 +7,7 @@ namespace Timewaster.Web.ViewModels
 {
     public class PlanViewModel
     {
-        public DateTime CreatedAt { get; set; }
-        public DateTime ClosingAt { get; set; }
-
+        public Sprint Sprint { get; set; }
         public List<Status> Statuses { get; set; } = new List<Status>();
         public List<Story> Stories { get; set; } = new List<Story>();
         public List<Issue> Issues { get; set; } = new List<Issue>();

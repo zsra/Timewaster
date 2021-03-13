@@ -40,10 +40,11 @@ namespace Timewaster.Infrastructure.DataAccess
             return await _context.Set<TEntity>().ToListAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(ServiceContext context, TEntity entity, CancellationToken cancellationToken = default)
+        public async Task<TEntity> UpdateAsync(ServiceContext context, TEntity entity, CancellationToken cancellationToken = default)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync(cancellationToken);
+            return await GetByIdAsync(context, entity.Id);
         }
     }
 }

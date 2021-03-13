@@ -10,7 +10,7 @@ using Timewaster.Infrastructure.DataAccess;
 namespace Timewaster.Infrastructure.Migrations
 {
     [DbContext(typeof(TimewasterDbContext))]
-    [Migration("20210228213403_Initial")]
+    [Migration("20210313133409_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,21 +109,19 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ParentIssueId")
+                    b.Property<int?>("DiscussionId")
                         .HasColumnType("int");
 
                     b.Property<string>("PartitionKey")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ReferenceNumber")
                         .ValueGeneratedOnAdd()
@@ -148,9 +146,7 @@ namespace Timewaster.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentIssueId");
-
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("DiscussionId");
 
                     b.HasIndex("SprintId");
 
@@ -175,6 +171,9 @@ namespace Timewaster.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DiscussionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PartitionKey")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -190,6 +189,8 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DiscussionId");
 
                     b.HasIndex("ProjectId");
 
@@ -235,6 +236,9 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("DiscussionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -248,6 +252,8 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DiscussionId");
 
                     b.HasIndex("SprintId");
 
@@ -288,6 +294,10 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:HiLoSequenceName", "project")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -356,9 +366,6 @@ namespace Timewaster.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ClosedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("IssueId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("OpenById")
                         .HasColumnType("int");
 
@@ -370,8 +377,6 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IssueId");
 
                     b.HasIndex("OpenById");
 
@@ -387,15 +392,11 @@ namespace Timewaster.Infrastructure.Migrations
 
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Issue", b =>
                 {
-                    b.HasOne("Timewaster.Core.Entities.Boards.Issue", "ParentIssue")
-                        .WithMany("SubIssues")
-                        .HasForeignKey("ParentIssueId");
-
-                    b.HasOne("Timewaster.Core.Entities.Projects.Project", "Project")
+                    b.HasOne("Timewaster.Core.Entities.Socials.Discussion", "Discussion")
                         .WithMany()
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("DiscussionId");
 
-                    b.HasOne("Timewaster.Core.Entities.Boards.Sprint", "Sprint")
+                    b.HasOne("Timewaster.Core.Entities.Boards.Sprint", null)
                         .WithMany("Issues")
                         .HasForeignKey("SprintId");
 
@@ -407,11 +408,7 @@ namespace Timewaster.Infrastructure.Migrations
                         .WithMany("Issues")
                         .HasForeignKey("StoryId");
 
-                    b.Navigation("ParentIssue");
-
-                    b.Navigation("Project");
-
-                    b.Navigation("Sprint");
+                    b.Navigation("Discussion");
 
                     b.Navigation("Status");
 
@@ -420,9 +417,15 @@ namespace Timewaster.Infrastructure.Migrations
 
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Sprint", b =>
                 {
+                    b.HasOne("Timewaster.Core.Entities.Socials.Discussion", "Discussion")
+                        .WithMany()
+                        .HasForeignKey("DiscussionId");
+
                     b.HasOne("Timewaster.Core.Entities.Projects.Project", null)
                         .WithMany("Sprints")
                         .HasForeignKey("ProjectId");
+
+                    b.Navigation("Discussion");
                 });
 
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Status", b =>
@@ -434,9 +437,17 @@ namespace Timewaster.Infrastructure.Migrations
 
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Story", b =>
                 {
-                    b.HasOne("Timewaster.Core.Entities.Boards.Sprint", null)
+                    b.HasOne("Timewaster.Core.Entities.Socials.Discussion", "Discussion")
+                        .WithMany()
+                        .HasForeignKey("DiscussionId");
+
+                    b.HasOne("Timewaster.Core.Entities.Boards.Sprint", "Sprint")
                         .WithMany("Stories")
                         .HasForeignKey("SprintId");
+
+                    b.Navigation("Discussion");
+
+                    b.Navigation("Sprint");
                 });
 
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Tag", b =>
@@ -461,10 +472,6 @@ namespace Timewaster.Infrastructure.Migrations
 
             modelBuilder.Entity("Timewaster.Core.Entities.Socials.Discussion", b =>
                 {
-                    b.HasOne("Timewaster.Core.Entities.Boards.Issue", null)
-                        .WithMany("Discussions")
-                        .HasForeignKey("IssueId");
-
                     b.HasOne("Timewaster.Core.Entities.Accounts.User", "OpenBy")
                         .WithMany()
                         .HasForeignKey("OpenById");
@@ -475,10 +482,6 @@ namespace Timewaster.Infrastructure.Migrations
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Issue", b =>
                 {
                     b.Navigation("AssignedUsers");
-
-                    b.Navigation("Discussions");
-
-                    b.Navigation("SubIssues");
 
                     b.Navigation("Tags");
                 });

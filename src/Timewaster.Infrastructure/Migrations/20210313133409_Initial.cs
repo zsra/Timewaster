@@ -51,6 +51,7 @@ namespace Timewaster.Infrastructure.Migrations
                     RefernceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -59,67 +60,19 @@ namespace Timewaster.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sprints",
+                name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosingAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReferenceKey = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProjectId = table.Column<int>(type: "int", nullable: true),
+                    CreatedById = table.Column<int>(type: "int", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    DiscussionId = table.Column<int>(type: "int", nullable: true),
                     PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sprints", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sprints_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Statuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    SprintId = table.Column<int>(type: "int", nullable: true),
-                    PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Statuses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Statuses_Sprints_SprintId",
-                        column: x => x.SprintId,
-                        principalTable: "Sprints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    SprintId = table.Column<int>(type: "int", nullable: true),
-                    PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stories_Sprints_SprintId",
-                        column: x => x.SprintId,
-                        principalTable: "Sprints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,46 +85,15 @@ namespace Timewaster.Infrastructure.Migrations
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: true),
-                    SprintId = table.Column<int>(type: "int", nullable: true),
                     StoryId = table.Column<int>(type: "int", nullable: true),
-                    ParentIssueId = table.Column<int>(type: "int", nullable: true),
                     StatusId = table.Column<int>(type: "int", nullable: true),
+                    DiscussionId = table.Column<int>(type: "int", nullable: true),
+                    SprintId = table.Column<int>(type: "int", nullable: true),
                     PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Issues_Issues_ParentIssueId",
-                        column: x => x.ParentIssueId,
-                        principalTable: "Issues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Issues_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Issues_Sprints_SprintId",
-                        column: x => x.SprintId,
-                        principalTable: "Sprints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Issues_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Issues_Stories_StoryId",
-                        column: x => x.StoryId,
-                        principalTable: "Stories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,18 +150,11 @@ namespace Timewaster.Infrastructure.Migrations
                     OpenedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ClosedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     OpenById = table.Column<int>(type: "int", nullable: true),
-                    IssueId = table.Column<int>(type: "int", nullable: true),
                     PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Discussions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Discussions_Issues_IssueId",
-                        column: x => x.IssueId,
-                        principalTable: "Issues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Discussions_Users_OpenById",
                         column: x => x.OpenById,
@@ -249,29 +164,79 @@ namespace Timewaster.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Sprints",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedById = table.Column<int>(type: "int", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClosingAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReferenceKey = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DiscussionId = table.Column<int>(type: "int", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: true),
                     PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Sprints", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Discussions_DiscussionId",
+                        name: "FK_Sprints_Discussions_DiscussionId",
                         column: x => x.DiscussionId,
                         principalTable: "Discussions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Comments_Users_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "Users",
+                        name: "FK_Sprints_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    SprintId = table.Column<int>(type: "int", nullable: true),
+                    PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Statuses_Sprints_SprintId",
+                        column: x => x.SprintId,
+                        principalTable: "Sprints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    SprintId = table.Column<int>(type: "int", nullable: true),
+                    DiscussionId = table.Column<int>(type: "int", nullable: true),
+                    PartitionKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stories_Discussions_DiscussionId",
+                        column: x => x.DiscussionId,
+                        principalTable: "Discussions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Stories_Sprints_SprintId",
+                        column: x => x.SprintId,
+                        principalTable: "Sprints",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -287,24 +252,14 @@ namespace Timewaster.Infrastructure.Migrations
                 column: "DiscussionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Discussions_IssueId",
-                table: "Discussions",
-                column: "IssueId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Discussions_OpenById",
                 table: "Discussions",
                 column: "OpenById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Issues_ParentIssueId",
+                name: "IX_Issues_DiscussionId",
                 table: "Issues",
-                column: "ParentIssueId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_ProjectId",
-                table: "Issues",
-                column: "ProjectId");
+                column: "DiscussionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_SprintId",
@@ -322,6 +277,11 @@ namespace Timewaster.Infrastructure.Migrations
                 column: "StoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sprints_DiscussionId",
+                table: "Sprints",
+                column: "DiscussionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sprints_ProjectId",
                 table: "Sprints",
                 column: "ProjectId");
@@ -330,6 +290,11 @@ namespace Timewaster.Infrastructure.Migrations
                 name: "IX_Statuses_SprintId",
                 table: "Statuses",
                 column: "SprintId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stories_DiscussionId",
+                table: "Stories",
+                column: "DiscussionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stories_SprintId",
@@ -345,10 +310,70 @@ namespace Timewaster.Infrastructure.Migrations
                 name: "IX_Users_IssueId",
                 table: "Users",
                 column: "IssueId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Comments_Discussions_DiscussionId",
+                table: "Comments",
+                column: "DiscussionId",
+                principalTable: "Discussions",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Comments_Users_CreatedById",
+                table: "Comments",
+                column: "CreatedById",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Issues_Discussions_DiscussionId",
+                table: "Issues",
+                column: "DiscussionId",
+                principalTable: "Discussions",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Issues_Sprints_SprintId",
+                table: "Issues",
+                column: "SprintId",
+                principalTable: "Sprints",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Issues_Statuses_StatusId",
+                table: "Issues",
+                column: "StatusId",
+                principalTable: "Statuses",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Issues_Stories_StoryId",
+                table: "Issues",
+                column: "StoryId",
+                principalTable: "Stories",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Issues_Discussions_DiscussionId",
+                table: "Issues");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Sprints_Discussions_DiscussionId",
+                table: "Sprints");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Stories_Discussions_DiscussionId",
+                table: "Stories");
+
             migrationBuilder.DropTable(
                 name: "Comments");
 

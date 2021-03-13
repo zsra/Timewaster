@@ -13,7 +13,7 @@ namespace Timewaster.Core.Interfaces
         Task<T> GetByIdAsync(ServiceContext context, int id, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<T>> ListAllAsync(ServiceContext context, CancellationToken cancellationToken = default);
         Task<T> AddAsync(ServiceContext context, T entity, CancellationToken cancellationToken = default);
-        Task UpdateAsync(ServiceContext context, T entity, CancellationToken cancellationToken = default);
+        Task<T> UpdateAsync(ServiceContext context, T entity, CancellationToken cancellationToken = default);
         Task DeleteAsync(ServiceContext context, T entity, CancellationToken cancellationToken = default);
     }
 }
