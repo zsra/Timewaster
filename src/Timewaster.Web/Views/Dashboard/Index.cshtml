@@ -4,7 +4,7 @@
 }
 
 <a class="text-dark" asp-area="" asp-controller="Projects" asp-action="Create">+ Project</a>
-<div class="container">
+<div class="container-fluid">
     @foreach (var project in Model.Projects)
     {
     <a class="text-dark text-decoration-none" asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id="@project.Id">

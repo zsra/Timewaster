@@ -46,6 +46,21 @@ namespace Timewaster.Infrastructure.Migrations
             modelBuilder.HasSequence("user")
                 .IncrementsBy(10);
 
+            modelBuilder.Entity("SprintStatus", b =>
+                {
+                    b.Property<int>("SprintsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SprintsId", "StatusesId");
+
+                    b.HasIndex("StatusesId");
+
+                    b.ToTable("SprintStatus");
+                });
+
             modelBuilder.Entity("Timewaster.Core.Entities.Accounts.User", b =>
                 {
                     b.Property<int>("Id")
@@ -212,12 +227,7 @@ namespace Timewaster.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SprintId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SprintId");
 
                     b.ToTable("Statuses");
                 });
@@ -381,6 +391,21 @@ namespace Timewaster.Infrastructure.Migrations
                     b.ToTable("Discussions");
                 });
 
+            modelBuilder.Entity("SprintStatus", b =>
+                {
+                    b.HasOne("Timewaster.Core.Entities.Boards.Sprint", null)
+                        .WithMany()
+                        .HasForeignKey("SprintsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Timewaster.Core.Entities.Boards.Status", null)
+                        .WithMany()
+                        .HasForeignKey("StatusesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Timewaster.Core.Entities.Accounts.User", b =>
                 {
                     b.HasOne("Timewaster.Core.Entities.Boards.Issue", null)
@@ -424,13 +449,6 @@ namespace Timewaster.Infrastructure.Migrations
                         .HasForeignKey("ProjectId");
 
                     b.Navigation("Discussion");
-                });
-
-            modelBuilder.Entity("Timewaster.Core.Entities.Boards.Status", b =>
-                {
-                    b.HasOne("Timewaster.Core.Entities.Boards.Sprint", null)
-                        .WithMany("Statuses")
-                        .HasForeignKey("SprintId");
                 });
 
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Story", b =>
@@ -487,8 +505,6 @@ namespace Timewaster.Infrastructure.Migrations
             modelBuilder.Entity("Timewaster.Core.Entities.Boards.Sprint", b =>
                 {
                     b.Navigation("Issues");
-
-                    b.Navigation("Statuses");
 
                     b.Navigation("Stories");
                 });

@@ -8,6 +8,6 @@ namespace Timewaster.Core.Interfaces.Services
 {
     public interface IDashboardService
     {
-        public Task<IReadOnlyList<Project>> GetProjects(ServiceContext context);
+        public ValueTask<IReadOnlyList<Project>> GetProjects(ServiceContext context);
     }
 }

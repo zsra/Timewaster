@@ -31,15 +31,21 @@ namespace Timewaster.Core.Services
             _logger = logger;
         }
 
-        public async Task<Issue> CreateIssue(ServiceContext context, Issue issue)
+        public async ValueTask<Story> AssignSprintToStory(ServiceContext context, Story story, int sprintId)
+        {
+            story.Sprint = await _sprintRepository.GetByIdAsync(context, sprintId);
+            return story;
+        }
+
+        public async ValueTask<Issue> CreateIssue(ServiceContext context, Issue issue)
         {
             return await _issueRepository.AddAsync(context, issue);
         }
 
-        public async Task<(Sprint, IEnumerable<SprintStory>)> CreatePlan(ServiceContext context)
+        public async ValueTask<(Sprint, IEnumerable<SprintStory>)> CreatePlan(ServiceContext context)
         {
             IEnumerable<Status> statuses = await _statusRepository.ListAllAsync(context);
-            Sprint sprint = await _sprintRepository.AddAsync(context, GetNewSprint(statuses));
+            Sprint sprint = await _sprintRepository.AddAsync(context, GetNewSprint(context, statuses));
 
             SprintStoryBuilder builder = new SprintStoryBuilder();
             SprintStoryDirector director = new SprintStoryDirector(builder);
@@ -51,41 +57,41 @@ namespace Timewaster.Core.Services
             return (sprint, sprintStories);
         }
 
-        public async Task<Sprint> CreateSprint(ServiceContext context, Sprint sprint)
+        public async ValueTask<Sprint> CreateSprint(ServiceContext context, Sprint sprint)
         {
             return await _sprintRepository.AddAsync(context, sprint);
         }
 
-        public async Task<Story> CreateStory(ServiceContext context, Story story)
+        public async ValueTask<Story> CreateStory(ServiceContext context, Story story)
         {
             return await _storyRepository.AddAsync(context, story);
         }
 
-        public async Task DeleteIssue(ServiceContext context, int id)
+        public async ValueTask DeleteIssue(ServiceContext context, int id)
         {
             Issue issue = await _issueRepository.GetByIdAsync(context, id);
             await _issueRepository.DeleteAsync(context, issue);
         }
 
-        public async Task DeleteSprint(ServiceContext context, int id)
+        public async ValueTask DeleteSprint(ServiceContext context, int id)
         {
             Sprint sprint = await _sprintRepository.GetByIdAsync(context, id);
             await _sprintRepository.DeleteAsync(context, sprint);
         }
 
-        public async Task DeleteStory(ServiceContext context, int id)
+        public async ValueTask DeleteStory(ServiceContext context, int id)
         {
             Story story = await _storyRepository.GetByIdAsync(context, id);
             await _storyRepository.DeleteAsync(context, story);
         }
 
-        public async Task<IEnumerable<Status>> GetDefaultStatuses(ServiceContext context)
+        public async ValueTask<IEnumerable<Status>> GetDefaultStatuses(ServiceContext context)
         {
             return new List<Status>(await _statusRepository.ListAllAsync(context))
                 .Where(s => s.PartitionKey == "PK_GLOBAL");
         }
 
-        public async Task<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId)
+        public async ValueTask<(Sprint, IEnumerable<SprintStory>)> GetSprint(ServiceContext context, int sprintId)
         {
             Sprint sprint = await _sprintRepository.GetByIdAsync(context, sprintId);
 
@@ -99,26 +105,27 @@ namespace Timewaster.Core.Services
                 sprintStories.Add(builder.GetResult());
             }
 
-            return sprintStories;
+            return (sprint, sprintStories);
         }
 
-        public async Task<Issue> UpdateIssue(ServiceContext context, Issue issue)
+        public async ValueTask<Issue> UpdateIssue(ServiceContext context, Issue issue)
         {
             return await _issueRepository.UpdateAsync(context, issue);
         }
 
-        public async Task<Story> UpdateStory(ServiceContext context, Story story)
+        public async ValueTask<Story> UpdateStory(ServiceContext context, Story story)
         {
             return await _storyRepository.UpdateAsync(context, story);
         }
 
-        private Sprint GetNewSprint(IEnumerable<Status> statuses) => new Sprint
+        private Sprint GetNewSprint(ServiceContext context, IEnumerable<Status> statuses) => new Sprint
         {
             CreatedAt = DateTime.Now,
             ClosingAt = DateTime.Now.AddDays(10),
             Statuses = new List<Status>(statuses.Where(s => s.PartitionKey == "PK_GLOBAL")),
             Issues = new List<Issue>(),
-            Stories = new List<Story>()
+            Stories = new List<Story>(),
+            PartitionKey = context.ContextId
         };
     }
 }

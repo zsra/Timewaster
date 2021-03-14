@@ -26,30 +26,30 @@ namespace Timewaster.Core.Services
             _logger = logger;
         }
 
-        public async Task<Project> CreateAsync(ServiceContext context, Project project)
+        public async ValueTask<Project> CreateAsync(ServiceContext context, Project project)
         {
             return await _projectRepository.AddAsync(context, project);
         }
 
-        public async Task<Sprint> GetCurrentSprint(ServiceContext context, int projectId)
+        public async ValueTask<Sprint> GetCurrentSprint(ServiceContext context, int projectId)
         {
             Project project = await _projectRepository.GetByIdAsync(context, projectId);
             return project.Sprints.Last();
         }
 
-        public async Task<Project> GetProject(ServiceContext context, int projectId)
+        public async ValueTask<Project> GetProject(ServiceContext context, int projectId)
         {
             Project project = await _projectRepository.GetByIdAsync(context, projectId);
             project.Sprints.OrderByDescending(s => s.CreatedAt);
             return project;
         }
 
-        public async Task<User> GetUser(ServiceContext context, int userId)
+        public async ValueTask<User> GetUser(ServiceContext context, int userId)
         {
             return await _userRepository.GetByIdAsync(context, userId);
         }
 
-        public async Task<IReadOnlyList<User>> GetUsers(ServiceContext context)
+        public async ValueTask<IReadOnlyList<User>> GetUsers(ServiceContext context)
         {
             return await _userRepository.ListAllAsync(context);
         }

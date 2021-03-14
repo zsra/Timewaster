@@ -22,7 +22,7 @@ namespace Timewaster.Core.Services
             _logger = logger;
         }
 
-        public async Task<IReadOnlyList<Project>> GetProjects(ServiceContext context)
+        public async ValueTask<IReadOnlyList<Project>> GetProjects(ServiceContext context)
         {
             return await _projectRepository.ListAllAsync(context);
         }

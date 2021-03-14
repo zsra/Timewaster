@@ -29,17 +29,17 @@ namespace Timewaster.Core.Services
             _logger = logger;
         }
 
-        public async Task<Issue> GetIssueById(ServiceContext context, int id)
+        public async ValueTask<Issue> GetIssueById(ServiceContext context, int id)
         {
             return await _issueRepository.GetByIdAsync(context, id);
         }
 
-        public async Task<Project> GetProjectById(ServiceContext context, int id)
+        public async ValueTask<Project> GetProjectById(ServiceContext context, int id)
         {
             return await _projectRepository.GetByIdAsync(context, id);
         }
 
-        public async Task<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId)
+        public async ValueTask<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId)
         {
             Sprint sprint = await _sprintRepository.GetByIdAsync(context, sprintId);
             
@@ -56,7 +56,7 @@ namespace Timewaster.Core.Services
             return sprintStories;
         }
 
-        public async Task<Story> GetStoryById(ServiceContext context, int id)
+        public async ValueTask<Story> GetStoryById(ServiceContext context, int id)
         {
             return await _storyRepository.GetByIdAsync(context, id);
         }

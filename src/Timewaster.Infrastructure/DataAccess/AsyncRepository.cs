@@ -17,6 +17,7 @@ namespace Timewaster.Infrastructure.DataAccess
 
         public async Task<TEntity> AddAsync(ServiceContext context, TEntity entity, CancellationToken cancellationToken = default)
         {
+            entity.PartitionKey = context.ContextId;
             await _context.Set<TEntity>().AddAsync(entity);
             await _context.SaveChangesAsync(cancellationToken);
 

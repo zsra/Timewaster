@@ -8,9 +8,9 @@ namespace Timewaster.Core.Interfaces.Services
 {
     public interface IBoardService
     {
-        public Task<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId);
-        public Task<Project> GetProjectById(ServiceContext context, int id);
-        public Task<Issue> GetIssueById(ServiceContext context, int id);
-        public Task<Story> GetStoryById(ServiceContext context, int id);
+        public ValueTask<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId);
+        public ValueTask<Project> GetProjectById(ServiceContext context, int id);
+        public ValueTask<Issue> GetIssueById(ServiceContext context, int id);
+        public ValueTask<Story> GetStoryById(ServiceContext context, int id);
     }
 }

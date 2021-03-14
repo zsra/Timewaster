@@ -9,10 +9,10 @@ namespace Timewaster.Core.Interfaces.Services
 {
     public interface IProjectService
     {
-        public Task<Project> CreateAsync(ServiceContext context, Project project);
-        public Task<Project> GetProject(ServiceContext context, int projectId);
-        public Task<Sprint> GetCurrentSprint(ServiceContext context, int projectId);
-        public Task<IReadOnlyList<User>> GetUsers(ServiceContext context);
-        public Task<User> GetUser(ServiceContext context, int userId);
+        public ValueTask<Project> CreateAsync(ServiceContext context, Project project);
+        public ValueTask<Project> GetProject(ServiceContext context, int projectId);
+        public ValueTask<Sprint> GetCurrentSprint(ServiceContext context, int projectId);
+        public ValueTask<IReadOnlyList<User>> GetUsers(ServiceContext context);
+        public ValueTask<User> GetUser(ServiceContext context, int userId);
     }
 }

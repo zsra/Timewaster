@@ -3,46 +3,49 @@
     ViewData["Title"] = "Planning";
 }
 
-<div class="container">
+<div class="container-fluid">
     <div>
 
     </div>
-    <table class="table kanban-table">
+    <table class="table table-bordered table-sm kanban-table">
         <thead>
             <tr>
-                <th scope="col">Story <span><a class="text-dark" asp-area="" asp-controller="Plans" asp-action="CreateStory">+ add story</a></span></th>
+                
+                <th scope="col">Story <a class="text-dark float-right add-story-text" href="@Url.Action("CreateStory", "Plans" , new { sprintId=@Model.Sprint.Id })" >+ add story</a></th>
                 @foreach (var status in Model.Statuses)
                 {
                     <th scope="col">@status.Name</th>
                 }
-                <th scope="col">+</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var sprintStory in Model.SprintStories)
             {
             <tr>
-                <th scope="row">
-                    <div class="card story-card">
-                        <div class="card-body">
-                            <h5 class="card-title">@sprintStory.Story.Name</h5>
-                            <p class="card-text card-desc-text">@sprintStory.Story.Description</p>
+                @if (sprintStory.Story != null)
+                {
+                    <th scope="row">
+                        <div class="card story-card">
+                            <div class="card-body">
+                                <h5 class="card-title">@sprintStory.Story.Name</h5>
+                                <p class="card-text card-desc-text">@sprintStory.Story.Description</p>
+                            </div>
                         </div>
-                    </div>
-                </th>
+                    </th>
+                }
                 @foreach (var item in sprintStory.GroupOfIssues)
                 {
-                <th scope="row">
-                @if (item == sprintStory.GroupOfIssues.First())
-                {
-                    <a class="text-dark" asp-area="" asp-controller="Plans" asp-action="CreateIssue" asp-route-sprintid="@Model.Sprint.Id">+ add issue</a>
-                }
-                    <div class="card issue-card">
-                        <div class="card-body">
+                    <th scope="row">
+                        @if (item == sprintStory.GroupOfIssues.First())
+                        {
+                            <a class="text-dark float-right add-issue-text" href="@Url.Action("CreateIssue", "Plans" , new { sprintId=@Model.Sprint.Id, storyId=sprintStory.Story.Id })" >+ add issue</a>
+                        }
+                        <div class="card issue-card">
+                            <div class="card-body">
 
+                            </div>
                         </div>
-                    </div>
-                </th>
+                    </th>
                 }
             </tr>
             }
