@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Timewaster.Infrastructure\Timewaster.Infrastructure.csproj" />
-    <ProjectReference Include="..\Timewaster.Model\Timewaster.Core.csproj" />
+    <ProjectReference Include="..\Timewaster.Core\Timewaster.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timewaster.Model\Timewaster.Core.csproj" />
+    <ProjectReference Include="..\Timewaster.Core\Timewaster.Core.csproj" />
   </ItemGroup>
 
 </Project>

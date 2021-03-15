@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timewaster.Web", "src\Timew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timewaster.Infrastructure", "src\Timewaster.Infrastructure\Timewaster.Infrastructure.csproj", "{BBAD31B4-A204-4BC2-9AE9-CEAECEE1D3A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timewaster.Core", "src\Timewaster.Model\Timewaster.Core.csproj", "{6CDB3442-15AF-4F2F-9B47-E4041CA6E8D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timewaster.Core", "src\Timewaster.Core\Timewaster.Core.csproj", "{D42E456A-636B-4659-92D9-5B614C160DDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{BBAD31B4-A204-4BC2-9AE9-CEAECEE1D3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBAD31B4-A204-4BC2-9AE9-CEAECEE1D3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBAD31B4-A204-4BC2-9AE9-CEAECEE1D3A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CDB3442-15AF-4F2F-9B47-E4041CA6E8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CDB3442-15AF-4F2F-9B47-E4041CA6E8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CDB3442-15AF-4F2F-9B47-E4041CA6E8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CDB3442-15AF-4F2F-9B47-E4041CA6E8D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42E456A-636B-4659-92D9-5B614C160DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42E456A-636B-4659-92D9-5B614C160DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42E456A-636B-4659-92D9-5B614C160DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42E456A-636B-4659-92D9-5B614C160DDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
