@@ -7,7 +7,7 @@
     <div>
 
     </div>
-    <table class="table table-bordered table-sm kanban-table">
+    <table class="table table-bordered table-fixed kanban-table">
         <thead>
             <tr>
                 
@@ -36,15 +36,10 @@
                 @foreach (var item in sprintStory.GroupOfIssues)
                 {
                     <th scope="row">
-                        @if (item == sprintStory.GroupOfIssues.First())
-                        {
-                            <a class="text-dark float-right add-issue-text" href="@Url.Action("CreateIssue", "Plans" , new { sprintId=@Model.Sprint.Id, storyId=sprintStory.Story.Id })" >+ add issue</a>
-                        }
-                        <div class="card issue-card">
-                            <div class="card-body">
-
-                            </div>
-                        </div>
+                    @if (item == sprintStory.GroupOfIssues.First())
+                    {
+                        <a class="text-dark float-right add-issue-text" href="@Url.Action("CreateIssue", "Plans" , new { statusId=item.Item1.Id, storyId=sprintStory.Story.Id, sprintId=Model.Sprint.Id })">+ add issue</a>
+                                                                         }
                     </th>
                 }
             </tr>

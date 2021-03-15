@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Interfaces.Services;
 using Timewaster.Core.ValueObjects;
+using Timewaster.Web.Converters;
 using Timewaster.Web.ViewModels;
 
 namespace Timewaster.Web.Controllers
@@ -24,7 +25,7 @@ namespace Timewaster.Web.Controllers
             PlanViewModel viewModel;
             if (id == null)
             {
-                (Sprint sprint, IEnumerable<SprintStory> sprintStories) = await _plansService.CreatePlan(new ServiceContext() { ContextId = "test" });
+                (Sprint sprint, IEnumerable<SprintStory> sprintStories) = await _plansService.CreatePlan(new ServiceContext() { ContextId = "TEST" });
                 viewModel = new PlanViewModel
                 {
                     Sprint = sprint,
@@ -34,7 +35,7 @@ namespace Timewaster.Web.Controllers
             }
             else
             {
-                (Sprint sprint, IEnumerable<SprintStory> sprintStories) = await _plansService.GetSprint(new ServiceContext() { ContextId = "test" }, (int)id);
+                (Sprint sprint, IEnumerable<SprintStory> sprintStories) = await _plansService.GetSprintPlan(new ServiceContext() { ContextId = "TEST" }, (int)id);
                 viewModel = new PlanViewModel
                 {
                     Sprint = sprint,
@@ -46,31 +47,37 @@ namespace Timewaster.Web.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> CreateStory(Story story, int sprintId)
+        public async Task<IActionResult> CreateStory(StoryViewModel storyVM, int sprintId)
         {
-            if (!string.IsNullOrEmpty(story.Name))
-            {          
-                await _plansService.CreateStory(new ServiceContext() { ContextId = "TEST" }, story);
-                return RedirectToAction(nameof(Index), sprintId);
-            }
-            else
+            if (ModelState.IsValid)
             {
-                story = await _plansService.AssignSprintToStory(new ServiceContext() { ContextId = "TEST" }, story, sprintId);
-                return View(story);
+                Sprint sprint = await _plansService.GetSprint(new ServiceContext() { ContextId = "TEST" }, storyVM.SprintId);
+                Story story = storyVM.ViewModelToEntity(sprint);
+                
+                await _plansService.CreateStory(new ServiceContext() { ContextId = "TEST" }, story);
+                
+                return RedirectToAction(nameof(Index), new { id = storyVM.SprintId });
             }
-
-           
+            storyVM.SprintId = sprintId;
+            return View(storyVM);
         }
 
-        public async Task<IActionResult> CreateIssue([Bind("Name, Description")] Issue issue)
+        public async Task<IActionResult> CreateIssue(IssueViewModel issueVM, int statusId, int storyId, int sprintId)
         {
-            if (!string.IsNullOrEmpty(issue.Title))
+            if (ModelState.IsValid)
             {
+                Status status = await _plansService.GetStatus(new ServiceContext() { ContextId = "TEST" }, issueVM.StatusId);
+                Story story = await _plansService.GetStory(new ServiceContext() { ContextId = "TEST" }, issueVM.StoryId);   
+                Issue issue = issueVM.ViewModelToEntity(status, story);
+
                 await _plansService.CreateIssue(new ServiceContext() { ContextId = "TEST" }, issue);
-                return RedirectToAction(nameof(Index));
-            }
                 
-            return View(issue);
+                return RedirectToAction(nameof(Index), new { id = issueVM.SprintId });
+            }
+            issueVM.StatusId = statusId;
+            issueVM.StoryId = storyId;
+            issueVM.SprintId = sprintId;
+            return View(issueVM);
         }
 
         public async Task<IActionResult> UpdateStory([Bind("Name, Description")] Story story)
@@ -79,10 +86,22 @@ namespace Timewaster.Web.Controllers
             return View(story);
         }
 
-        public async Task<IActionResult> UpdateIssue([Bind("Name, Description")] Issue issue)
+        public async Task<IActionResult> UpdateIssue(int id, IssueViewModel issueVM)
         {
-            await _plansService.UpdateIssue(new ServiceContext() { ContextId = "TEST" }, issue);
-            return View(issue);
+            if (id != issueVM.Id)
+                return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                Status status = await _plansService.GetStatus(new ServiceContext() { ContextId = "TEST" }, issueVM.StatusId);
+                Story story = await _plansService.GetStory(new ServiceContext() { ContextId = "TEST" }, issueVM.StoryId);
+                Issue issue = issueVM.ViewModelToEntity(status, story);
+                
+                await _plansService.UpdateIssue(new ServiceContext() { ContextId = "TEST" }, issue);
+                return RedirectToAction(nameof(Index), new { id = issueVM.SprintId });
+            }
+
+            return View(issueVM);
         }
 
         public async Task<IActionResult> DeleteSprint(int id)

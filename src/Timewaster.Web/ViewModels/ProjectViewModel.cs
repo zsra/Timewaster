@@ -9,6 +9,9 @@ namespace Timewaster.Web.ViewModels
 {
     public class ProjectViewModel
     {
+        public int? Id { get; set; }
+        public string PartitionKey { get; set; }
+
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
         public Sprint CurrentSprint { get; set; }

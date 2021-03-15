@@ -11,5 +11,6 @@ namespace Timewaster.Core.Entities.Accounts
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public DateTime JoinedAt { get; set; }
+        public virtual Team Team { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Timewaster.Core.Entities.Boards.Issue
+﻿@model Timewaster.Web.ViewModels.IssueViewModel
 @{
     ViewData["Title"] = "Create issue";
 }
@@ -17,6 +17,8 @@
                 <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <input asp-for="StatusId" type="hidden" />
+            <input asp-for="StoryId" type="hidden" />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

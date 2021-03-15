@@ -18,6 +18,8 @@ namespace Timewaster.Web.Configurations
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IPlansService, PlansService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITeamService, TeamService>();
 
             return services;
         }

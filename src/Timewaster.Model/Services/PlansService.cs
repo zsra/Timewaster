@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Timewaster.Core.Entities.Accounts;
 using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Extensions;
 using Timewaster.Core.Interfaces;
@@ -17,24 +18,20 @@ namespace Timewaster.Core.Services
         private readonly IAsyncRepository<Issue> _issueRepository;
         private readonly IAsyncRepository<Sprint> _sprintRepository;
         private readonly IAsyncRepository<Status> _statusRepository;
+        private readonly IAsyncRepository<User> _userRepository;
 
         private readonly IAppLogger<PlansService> _logger;
 
         public PlansService(IAsyncRepository<Story> storyRepository, 
             IAsyncRepository<Issue> issueRepository, IAsyncRepository<Sprint> sprintRepository, 
-            IAsyncRepository<Status> statusRepository, IAppLogger<PlansService> logger)
+            IAsyncRepository<Status> statusRepository, IAsyncRepository<User> userRepository, IAppLogger<PlansService> logger)
         {
             _storyRepository = storyRepository;
             _issueRepository = issueRepository;
             _sprintRepository = sprintRepository;
             _statusRepository = statusRepository;
+            _userRepository = userRepository;
             _logger = logger;
-        }
-
-        public async ValueTask<Story> AssignSprintToStory(ServiceContext context, Story story, int sprintId)
-        {
-            story.Sprint = await _sprintRepository.GetByIdAsync(context, sprintId);
-            return story;
         }
 
         public async ValueTask<Issue> CreateIssue(ServiceContext context, Issue issue)
@@ -91,7 +88,7 @@ namespace Timewaster.Core.Services
                 .Where(s => s.PartitionKey == "PK_GLOBAL");
         }
 
-        public async ValueTask<(Sprint, IEnumerable<SprintStory>)> GetSprint(ServiceContext context, int sprintId)
+        public async ValueTask<(Sprint, IEnumerable<SprintStory>)> GetSprintPlan(ServiceContext context, int sprintId)
         {
             Sprint sprint = await _sprintRepository.GetByIdAsync(context, sprintId);
 
@@ -108,6 +105,11 @@ namespace Timewaster.Core.Services
             return (sprint, sprintStories);
         }
 
+        public async ValueTask<Sprint> GetSprint(ServiceContext context, int sprintId)
+        {
+            return await _sprintRepository.GetByIdAsync(context, sprintId);
+        }
+
         public async ValueTask<Issue> UpdateIssue(ServiceContext context, Issue issue)
         {
             return await _issueRepository.UpdateAsync(context, issue);
@@ -116,6 +118,16 @@ namespace Timewaster.Core.Services
         public async ValueTask<Story> UpdateStory(ServiceContext context, Story story)
         {
             return await _storyRepository.UpdateAsync(context, story);
+        }
+
+        public async ValueTask<Story> GetStory(ServiceContext context, int storyId)
+        {
+            return await _storyRepository.GetByIdAsync(context, storyId);
+        }
+
+        public async ValueTask<Status> GetStatus(ServiceContext context, int statusId)
+        {
+            return await _statusRepository.GetByIdAsync(context, statusId);
         }
 
         private Sprint GetNewSprint(ServiceContext context, IEnumerable<Status> statuses) => new Sprint
@@ -127,5 +139,12 @@ namespace Timewaster.Core.Services
             Stories = new List<Story>(),
             PartitionKey = context.ContextId
         };
+
+        public async ValueTask<Issue> AssignUserToIssue(ServiceContext context, int issueId, int userId)
+        {
+            Issue issue = await _issueRepository.GetByIdAsync(context, issueId);
+            issue.AssignedUsers.Add(await _userRepository.GetByIdAsync(context, userId));
+            return await _issueRepository.UpdateAsync(context, issue);
+        }
     }
 }

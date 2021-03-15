@@ -9,8 +9,8 @@ namespace Timewaster.Core.Interfaces.Services
     public interface IBoardService
     {
         public ValueTask<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId);
-        public ValueTask<Project> GetProjectById(ServiceContext context, int id);
         public ValueTask<Issue> GetIssueById(ServiceContext context, int id);
         public ValueTask<Story> GetStoryById(ServiceContext context, int id);
+        public ValueTask<Issue> ChangeStatusOnIssue(ServiceContext context, Issue issue, int statusId);
     }
 }

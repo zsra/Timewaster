@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Interfaces.Extensions;
@@ -14,6 +15,20 @@ namespace Timewaster.Core.Extensions
 
         public SprintStory GetResult() => new SprintStory { Story = Story, GroupOfIssues = GetGroupOfIssues() };
 
-        private IEnumerable<IGrouping<Status, Issue>> GetGroupOfIssues() => Issues.GroupBy(issue => issue.Status);
+        private IEnumerable<(Status, List<Issue>)> GetGroupOfIssues()
+        {
+            List<(Status, List<Issue>)> result = new List<(Status, List<Issue>)>();
+            AddStatuses(ref result);
+            foreach(var (issue, item) in from Issue issue in Issues from item in from item in result
+                                              where item.Item1.Id == issue.Status.Id select item select (issue, item))
+            {
+                item.Item2.Add(issue);
+            }
+
+            return result;
+        }
+
+        private void AddStatuses(ref List<(Status, List<Issue>)> result) => result.AddRange(from Status status in Statuses
+                                                                                             select (status, new List<Issue>()));
     }
 }
