@@ -6,19 +6,47 @@ namespace Timewaster.Web.Converters
 {
     public static class BoardConverters
     {
+        #region Story converters
         public static Story ViewModelToEntity(this StoryViewModel viewModel, Sprint sprint)
         {
             NullChecker(viewModel, sprint);
-            return new Story 
+            return new Story
             {
                 Id = (int)viewModel.Id,
                 PartitionKey = viewModel.PartitionKey,
                 Name = viewModel.Name,
                 Description = viewModel.Description,
                 Sprint = sprint,
+                IsClosed = viewModel.IsClosed
             };
         }
 
+        public static StoryViewModel EntityToViewModel(this Story story)
+        {
+            if(story == null)
+                throw new ArgumentNullException($"{nameof(story)} cannot be null");
+
+            return new StoryViewModel
+            {
+                Id = story.Id,
+                Description = story.Description,
+                IsClosed = story.IsClosed,
+                Name = story.Name,
+                PartitionKey = story.PartitionKey,
+                SprintId = story.Sprint.Id
+            };
+        }
+
+        private static void NullChecker(StoryViewModel viewModel, Sprint sprint)
+        {
+            if (viewModel == null)
+                throw new ArgumentNullException($"{nameof(viewModel)} cannot be null");
+            if (sprint == null)
+                throw new ArgumentNullException($"{nameof(sprint)} cannot be null");
+        }
+        #endregion
+
+        #region Issue converters
         public static Issue ViewModelToEntity(this IssueViewModel viewModel, Status status, Story story)
         {
             NullChecker(viewModel, status, story);
@@ -33,22 +61,32 @@ namespace Timewaster.Web.Converters
             };
         }
 
-        private static void NullChecker(StoryViewModel viewModel, Sprint sprint)
+        public static IssueViewModel EntityToViewModel(this Issue issue)
         {
-            if (viewModel == null)
-                throw new ArgumentNullException($"{nameof(viewModel)} cannot be null");
-            if (sprint == null)
-                throw new ArgumentNullException($"{nameof(sprint)} cannot be null");
+            if(issue == null)
+                throw new ArgumentNullException($"{nameof(issue)} cannot be null");
+
+            return new IssueViewModel
+            {
+                Id = issue.Id,
+                Description = issue.Description,
+                PartitionKey = issue.PartitionKey,
+                SprintId = issue.Story.Sprint.Id,
+                StatusId = issue.Status.Id,
+                StoryId = issue.Story.Id,
+                Title = issue.Title
+            };
         }
 
         private static void NullChecker(IssueViewModel viewModel, Status status, Story story)
         {
-            if(viewModel == null)
+            if (viewModel == null)
                 throw new ArgumentNullException($"{nameof(viewModel)} cannot be null");
-            if(status == null)
+            if (status == null)
                 throw new ArgumentNullException($"{nameof(status)} cannot be null");
-            if(story == null)
+            if (story == null)
                 throw new ArgumentNullException($"{nameof(story)} cannot be null");
         }
+        #endregion
     }
 }

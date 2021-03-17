@@ -9,6 +9,7 @@ namespace Timewaster.Core.Entities.Boards
         public DateTime CreatedAt { get; set; }
         public DateTime ClosingAt { get; set; }
         public int ReferenceKey { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual Discussion Discussion { get; set; }
         public virtual ICollection<Story> Stories { get; set; }

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timewaster.Infrastructure",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timewaster.Core", "src\Timewaster.Core\Timewaster.Core.csproj", "{D42E456A-636B-4659-92D9-5B614C160DDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timewaster.Test", "tests\Timewaster.Test\Timewaster.Test.csproj", "{5E755650-741A-4CEA-8A32-31945AD99280}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D42E456A-636B-4659-92D9-5B614C160DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D42E456A-636B-4659-92D9-5B614C160DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D42E456A-636B-4659-92D9-5B614C160DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E755650-741A-4CEA-8A32-31945AD99280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E755650-741A-4CEA-8A32-31945AD99280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E755650-741A-4CEA-8A32-31945AD99280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E755650-741A-4CEA-8A32-31945AD99280}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

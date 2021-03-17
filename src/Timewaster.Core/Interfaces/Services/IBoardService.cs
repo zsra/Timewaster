@@ -11,6 +11,7 @@ namespace Timewaster.Core.Interfaces.Services
         public ValueTask<IEnumerable<SprintStory>> GetSprintStories(ServiceContext context, int sprintId);
         public ValueTask<Issue> GetIssueById(ServiceContext context, int id);
         public ValueTask<Story> GetStoryById(ServiceContext context, int id);
+        public ValueTask<Sprint> GetSprintById(ServiceContext context, int id);
         public ValueTask<Issue> ChangeStatusOnIssue(ServiceContext context, Issue issue, int statusId);
     }
 }

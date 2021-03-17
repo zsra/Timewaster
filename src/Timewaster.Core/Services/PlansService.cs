@@ -54,11 +54,6 @@ namespace Timewaster.Core.Services
             return (sprint, sprintStories);
         }
 
-        public async ValueTask<Sprint> CreateSprint(ServiceContext context, Sprint sprint)
-        {
-            return await _sprintRepository.AddAsync(context, sprint);
-        }
-
         public async ValueTask<Story> CreateStory(ServiceContext context, Story story)
         {
             return await _storyRepository.AddAsync(context, story);
@@ -137,7 +132,8 @@ namespace Timewaster.Core.Services
             Statuses = new List<Status>(statuses.Where(s => s.PartitionKey == "PK_GLOBAL")),
             Issues = new List<Issue>(),
             Stories = new List<Story>(),
-            PartitionKey = context.ContextId
+            PartitionKey = context.ContextId,
+            IsActive = true
         };
 
         public async ValueTask<Issue> AssignUserToIssue(ServiceContext context, int issueId, int userId)

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timewaster.Core.Entities.Boards;
 using Timewaster.Core.Entities.Projects;
+using System.Linq;
 
 namespace Timewaster.Infrastructure.DataAccess
 {
@@ -29,6 +30,12 @@ namespace Timewaster.Infrastructure.DataAccess
                 if (!await context.Projects.AnyAsync())
                 {
                     await context.Projects.AddRangeAsync(GetProjects());
+                    await context.SaveChangesAsync();
+                }
+
+                if (!await context.Sprints.AnyAsync())
+                {
+                    await context.Sprints.AddRangeAsync(GetSprints());
                     await context.SaveChangesAsync();
                 }
 #endif
@@ -58,5 +65,101 @@ namespace Timewaster.Infrastructure.DataAccess
             new Project { Name = "Project #2", Description = LORUM_IPSUM, PartitionKey = GLOBAL_PARTITION_KEY },
             new Project { Name = "Project #3", Description = LORUM_IPSUM, PartitionKey = GLOBAL_PARTITION_KEY },
         };
+
+        private static IEnumerable<Sprint> GetSprints() => new List<Sprint> {
+            new Sprint
+            { 
+                CreatedAt = DateTime.Now,
+                ClosingAt = DateTime.Now.AddDays(10),
+                PartitionKey = GLOBAL_PARTITION_KEY,
+                Statuses = GetDefaultStatuses().ToList(),
+                Stories = new List<Story>
+                {
+                    new Story
+                    {
+                        Name = "Customer handling",
+                        Description = LORUM_IPSUM,
+                        PartitionKey = GLOBAL_PARTITION_KEY,
+                        Issues = new List<Issue>
+                        {
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().First(),
+                                Title = "Customer registration"
+                            },
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().First(),
+                                Title = "Customer modifying"
+                            },
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().ElementAt(1),
+                                Title = "Authentication"
+                            },
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().Last(),
+                                Title = "Customer data model"
+                            },
+                        }
+                    },
+                    new Story
+                    {
+                        Name = "Cash hangling",
+                        Description = LORUM_IPSUM,
+                        PartitionKey = GLOBAL_PARTITION_KEY,
+                        Issues = new List<Issue>
+                        {
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().First(),
+                                Title = "Cash register"
+                            },
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().First(),
+                                Title = "Transaction"
+                            },
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().ElementAt(1),
+                                Title = "Cards handling"
+                            },
+                            new Issue
+                            {
+                                CreatedAt = DateTime.Now,
+                                Description = LORUM_IPSUM,
+                                PartitionKey = GLOBAL_PARTITION_KEY,
+                                Status = GetDefaultStatuses().ToList().Last(),
+                                Title = "Check the policies"
+                            },
+                        }
+                    }
+                }
+            },
+        };
+
     }
 }

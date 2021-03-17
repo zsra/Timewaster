@@ -13,5 +13,6 @@ namespace Timewaster.Web.ViewModels
         public string Description { get; set; }
         [Required]
         public int SprintId { get; set; }
+        public bool IsClosed { get; set; }
     }
 }

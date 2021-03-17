@@ -6,8 +6,7 @@ namespace Timewaster.Web.ViewModels
 {
     public class BoardViewModel
     {
-        public string ProjectName { get; set; }
         public Sprint Sprint { get; set; }
-        public List<SprintStory> Rows { get; set; } = new List<SprintStory>();
+        public IEnumerable<SprintStory> Rows { get; set; }
     }
 }
