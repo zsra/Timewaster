@@ -9,9 +9,8 @@
     </div>
     <table class="table table-bordered table-fixed kanban-table">
         <thead>
-            <tr>
-                
-                <th scope="col">Story <a class="text-dark float-right add-story-text" href="@Url.Action("CreateStory", "Plans" , new { sprintId=@Model.Sprint.Id })" >+ add story</a></th>
+            <tr>              
+                <th scope="col">Stories <a class="text-dark float-right add-story-text" href="@Url.Action("CreateStory", "Plans" , new { sprintId=@Model.Sprint.Id })" >+ add story</a></th>
                 @foreach (var status in Model.Statuses)
                 {
                     <th scope="col">@status.Name</th>
@@ -24,23 +23,37 @@
             <tr>
                 @if (sprintStory.Story != null)
                 {
-                    <th scope="row">
+                <th scope="row">
+                    <a class="list-group-item list-group-item-action" href="@Url.Action("UpdateStory", "Plans" , new { sprintStory.Story })">
                         <div class="card story-card">
                             <div class="card-body">
                                 <h5 class="card-title">@sprintStory.Story.Name</h5>
                                 <p class="card-text card-desc-text">@sprintStory.Story.Description</p>
                             </div>
                         </div>
-                    </th>
+                    </a>
+                </th>
                 }
                 @foreach (var item in sprintStory.GroupOfIssues)
                 {
-                    <th scope="row">
-                    @if (item == sprintStory.GroupOfIssues.First())
-                    {
-                        <a class="text-dark float-right add-issue-text" href="@Url.Action("CreateIssue", "Plans" , new { statusId=item.Item1.Id, storyId=sprintStory.Story.Id, sprintId=Model.Sprint.Id })">+ add issue</a>
-                                                                         }
-                    </th>
+            <th scope="row">
+                @if (item == sprintStory.GroupOfIssues.First())
+                {
+                    <a class="text-dark float-right add-issue-text" href="@Url.Action("CreateIssue", "Plans" , new { statusId=item.Item1.Id, storyId=sprintStory.Story.Id, sprintId=Model.Sprint.Id })">+ add issue</a>
+                }
+                @foreach (var issue in item.Item2)
+                {
+                    <a class="list-group-item list-group-item-action" href="@Url.Action("UpdateIssue", "Plans" , new { item.Item1.Id })">
+                        <div class="card title-card">
+                            <div class="card-body">
+                                <h5 class="card-title">@issue.Title</h5>
+                                <h5 class="mb-1">@issue.ReferenceNumber</h5>
+                                <p class="card-text card-desc-text">@issue.Description</p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </th>
                 }
             </tr>
             }

@@ -61,6 +61,12 @@ namespace Timewaster.Core.Services
             return sprintStories;
         }
 
+        public async ValueTask<IEnumerable<Status>> GetStatusesBySprintId(ServiceContext context, int sprintId)
+        {
+            Sprint sprint = await _sprintRepository.GetByIdAsync(context, sprintId);
+            return sprint.Statuses;
+        }
+
         public async ValueTask<Story> GetStoryById(ServiceContext context, int id)
         {
             return await _storyRepository.GetByIdAsync(context, id);

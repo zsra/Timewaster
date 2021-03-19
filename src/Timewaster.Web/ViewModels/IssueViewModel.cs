@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Timewaster.Core.Entities.Boards;
 
 namespace Timewaster.Web.ViewModels
 {

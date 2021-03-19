@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Timewaster.Core.Entities.Boards;
+using Timewaster.Core.ValueObjects;
 using Timewaster.Web.ViewModels;
 
 namespace Timewaster.Web.Converters
@@ -86,6 +89,29 @@ namespace Timewaster.Web.Converters
                 throw new ArgumentNullException($"{nameof(status)} cannot be null");
             if (story == null)
                 throw new ArgumentNullException($"{nameof(story)} cannot be null");
+        }
+        #endregion
+
+        #region Sprint converters
+        public static BoardViewModel EntityToViewModel(this Sprint sprint, IEnumerable<SprintStory> sprintStories, IEnumerable<Status> statuses)
+        {
+            NullChecker(sprint, sprintStories, statuses);
+            return new BoardViewModel
+            {
+                Sprint = sprint,
+                Rows = sprintStories,
+                Statuses = statuses
+            };
+        }
+
+        private static void NullChecker(Sprint sprint, IEnumerable<SprintStory> sprintStories, IEnumerable<Status> statuses)
+        {
+            if (sprint == null)
+                throw new ArgumentNullException($"{nameof(sprint)} cannot be null");
+            if (sprintStories?.Any() == false)
+                throw new ArgumentNullException($"{nameof(sprintStories)} cannot be null");
+            if (statuses?.Any() == false)
+                throw new ArgumentNullException($"{nameof(statuses)} cannot be null");
         }
         #endregion
     }

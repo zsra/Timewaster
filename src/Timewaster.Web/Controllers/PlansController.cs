@@ -22,28 +22,15 @@ namespace Timewaster.Web.Controllers
 
         public async Task<IActionResult> Index(int? id)
         {
-            PlanViewModel viewModel;
-            if (id == null)
-            {
-                (Sprint sprint, IEnumerable<SprintStory> sprintStories) = await _plansService.CreatePlan(new ServiceContext() { ContextId = "TEST" });
-                viewModel = new PlanViewModel
-                {
-                    Sprint = sprint,
-                    SprintStories = new List<SprintStory>(sprintStories),
-                    Statuses = new List<Status>(await _plansService.GetDefaultStatuses(new ServiceContext()))
-                };
-            }
-            else
-            {
-                (Sprint sprint, IEnumerable<SprintStory> sprintStories) = await _plansService.GetSprintPlan(new ServiceContext() { ContextId = "TEST" }, (int)id);
-                viewModel = new PlanViewModel
-                {
-                    Sprint = sprint,
-                    SprintStories = new List<SprintStory>(sprintStories),
-                    Statuses = new List<Status>(await _plansService.GetDefaultStatuses(new ServiceContext())),
-                };
-            }
-           
+            PlanViewModel viewModel = id == null
+                ? PlansConverters.EntityToViewModel(
+                   board: await _plansService.CreatePlan(new ServiceContext() { ContextId = "TEST" }),
+                   statuses: await _plansService.GetDefaultStatuses(new ServiceContext())
+                   )
+                : PlansConverters.EntityToViewModel(
+                    board: await _plansService.GetSprintPlan(new ServiceContext() { ContextId = "TEST" }, (int)id),
+                    statuses: await _plansService.GetDefaultStatuses(new ServiceContext())
+                    );
             return View(viewModel);
         }
 

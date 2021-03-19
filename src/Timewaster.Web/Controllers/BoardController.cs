@@ -20,10 +20,11 @@ namespace Timewaster.Web.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             if (id == null) return NotFound();
-            BoardViewModel viewModel = new BoardViewModel {
-                Rows = await _boardService.GetSprintStories(new ServiceContext { ContextId = "TEST"}, (int)id),
-                Sprint = await _boardService.GetSprintById(new ServiceContext { ContextId = "TEST" }, (int)id)
-            };
+            Sprint Sprint = await _boardService.GetSprintById(new ServiceContext { ContextId = "TEST" }, (int)id);
+            BoardViewModel viewModel = Sprint.EntityToViewModel(
+                            sprintStories: await _boardService.GetSprintStories(new ServiceContext { ContextId = "TEST" }, (int)id),
+                            statuses: await _boardService.GetStatusesBySprintId(new ServiceContext { ContextId = "TEST" }, (int)id));
+            
             return View(viewModel);
         }
 
@@ -32,6 +33,7 @@ namespace Timewaster.Web.Controllers
             if (id == null) return NotFound();
             Story story = await _boardService.GetStoryById(new ServiceContext { ContextId = "TEST" }, (int)id);
             StoryViewModel storyVM = story.EntityToViewModel();
+            
             return View(storyVM);
         }
 
@@ -40,6 +42,7 @@ namespace Timewaster.Web.Controllers
             if (id == null) return NotFound();
             Issue issue = await _boardService.GetIssueById(new ServiceContext { ContextId = "TEST" }, (int)id);
             IssueViewModel issueVM = issue.EntityToViewModel();
+            
             return View(issueVM);
         }
     }

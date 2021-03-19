@@ -1,5 +1,58 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Timewaster.Web.ViewModels.BoardViewModel
 @{
+    ViewData["Title"] = "Board";
 }
+
+<div class="container-fluid">
+    <div>
+
+    </div>
+    <table class="table table-bordered table-fixed kanban-table">
+        <thead>
+            <tr>
+                <th scope="col">Story</th>
+                @foreach (var status in Model.Rows)
+                {
+                    <th scope="col">@status.GroupOfIssues</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sprintStory in Model.Rows)
+            {
+                <tr>
+                    @if (sprintStory.Story != null)
+                    {
+                        <th scope="row">
+                            <a class="list-group-item list-group-item-action" href="@Url.Action("GetStory", "Boards" , new { sprintStory.Story.Id })">
+                                <div class="card story-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@sprintStory.Story.Name</h5>
+                                        <p class="card-text card-desc-text">@sprintStory.Story.Description</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </th>
+                    }
+                    @foreach (var item in sprintStory.GroupOfIssues)
+                    {
+                        <th scope="row">
+                            @foreach (var issue in item.Item2)
+                            {
+                                <a class="list-group-item list-group-item-action" href="@Url.Action("GetIssue", "Boards" , new { issue.Id })">
+                                    <div class="card title-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@issue.Title</h5>
+                                            <h5 class="mb-1">@issue.ReferenceNumber</h5>
+                                            <p class="card-text card-desc-text">@issue.Description</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        </th>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
