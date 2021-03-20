@@ -24,9 +24,10 @@ namespace Timewaster.Infrastructure.DataAccess
             return entity;
         }
 
-        public async Task DeleteAsync(ServiceContext context, TEntity entity, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(ServiceContext context, int id, CancellationToken cancellationToken = default)
         {
-            _context.Set<TEntity>().Remove(entity);
+            TEntity _entity = await GetByIdAsync(context, id, cancellationToken);
+            _context.Set<TEntity>().Remove(_entity);
             await _context.SaveChangesAsync(cancellationToken);
         }
 

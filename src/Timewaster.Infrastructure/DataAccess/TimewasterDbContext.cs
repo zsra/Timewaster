@@ -21,8 +21,10 @@ namespace Timewaster.Infrastructure.DataAccess
         public DbSet<Discussion> Discussions { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Story> Stories { get; set; }
-        public DbSet<Sprint> Sprints { get; set; }
         public DbSet<Status> Statuses { get; set; }
+        public DbSet<Sprint> Sprints { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

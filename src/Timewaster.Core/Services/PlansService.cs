@@ -61,26 +61,22 @@ namespace Timewaster.Core.Services
 
         public async ValueTask DeleteIssue(ServiceContext context, int id)
         {
-            Issue issue = await _issueRepository.GetByIdAsync(context, id);
-            await _issueRepository.DeleteAsync(context, issue);
+            await _issueRepository.DeleteAsync(context, id);
         }
 
         public async ValueTask DeleteSprint(ServiceContext context, int id)
         {
-            Sprint sprint = await _sprintRepository.GetByIdAsync(context, id);
-            await _sprintRepository.DeleteAsync(context, sprint);
+            await _sprintRepository.DeleteAsync(context, id);
         }
 
         public async ValueTask DeleteStory(ServiceContext context, int id)
         {
-            Story story = await _storyRepository.GetByIdAsync(context, id);
-            await _storyRepository.DeleteAsync(context, story);
+            await _storyRepository.DeleteAsync(context, id);
         }
 
         public async ValueTask<IEnumerable<Status>> GetDefaultStatuses(ServiceContext context)
         {
-            return new List<Status>(await _statusRepository.ListAllAsync(context))
-                .Where(s => s.PartitionKey == "PK_GLOBAL");
+            return new List<Status>(await _statusRepository.ListAllAsync(new ServiceContext { ContextId = "PK_GLOBAL" }));
         }
 
         public async ValueTask<(Sprint, IEnumerable<SprintStory>)> GetSprintPlan(ServiceContext context, int sprintId)
