@@ -10,7 +10,6 @@ namespace Timewaster.Infrastructure.Configs
         {
             builder.ToTable("ApplicationUsers");
 
-            builder.Property(i => i.Id).UseHiLo("applicationuser").IsRequired();
             builder.Property(i => i.Firstname).IsRequired().HasMaxLength(50);
             builder.Property(i => i.Lastname).IsRequired().HasMaxLength(50);
             builder.Property(i => i.Email).IsRequired().HasMaxLength(100);

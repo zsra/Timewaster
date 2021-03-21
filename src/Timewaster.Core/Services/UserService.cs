@@ -60,6 +60,7 @@ namespace Timewaster.Core.Services
 
         private ApplicationUser GetApplicationUser(SignUpData signUpData) => new ApplicationUser
         {
+            Id = Guid.NewGuid().ToString(),
             Email = signUpData.Email,
             UserName = signUpData.Username,
             Firstname = signUpData.Firstname,

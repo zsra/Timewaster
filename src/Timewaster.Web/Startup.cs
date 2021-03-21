@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timewaster.Core.Entities.Accounts;
+using Timewaster.Core.Interfaces.Services;
 using Timewaster.Infrastructure.DataAccess;
+using Timewaster.Infrastructure.Identity;
 using Timewaster.Web.Configurations;
 
 namespace Timewaster.Web
@@ -27,11 +33,30 @@ namespace Timewaster.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCookieSettings();
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                });
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                       .AddEntityFrameworkStores<AppIdentityDbContext>()
+                                       .AddDefaultTokenProviders();
+
+            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+
             services.AddCoreServices(Configuration);
             services.AddWebServices(Configuration);
 
             services.AddDbContext<TimewasterDbContext>(option =>
                option.UseSqlServer(Configuration.GetConnectionString("TimewasterConnection")));
+            services.AddDbContext<AppIdentityDbContext>(options =>
+              options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
             services.AddControllersWithViews();
             _services = services;
         }

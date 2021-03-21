@@ -10,13 +10,24 @@ namespace Timewaster.Core.Services
     public class TeamService : ITeamService
     {
         private readonly IAsyncRepository<Team> _teamRepository;
+        private readonly IAsyncRepository<User> _userRepository;
 
         private readonly IAppLogger<TeamService> _logger;
 
-        public TeamService(IAsyncRepository<Team> teamRepository, IAppLogger<TeamService> logger)
+        public TeamService(IAsyncRepository<Team> teamRepository, IAsyncRepository<User> userRepository, IAppLogger<TeamService> logger)
         {
             _teamRepository = teamRepository;
+            _userRepository = userRepository;
             _logger = logger;
+        }
+
+        public async ValueTask AddMemberToTeam(ServiceContext context, int teamId, int userId)
+        {
+            User user = await _userRepository.GetByIdAsync(context, userId);
+            Team team = await _teamRepository.GetByIdAsync(context, teamId);
+
+            user.Teams.Add(team);
+            await _userRepository.UpdateAsync(context, user);
         }
 
         public async ValueTask<Team> CreateTeam(ServiceContext context, Team team)

@@ -9,7 +9,7 @@ namespace Timewaster.Infrastructure.DataAccess
 {
     public class TimewasterDbContext : DbContext
     {
-        public TimewasterDbContext(DbContextOptions options) 
+        public TimewasterDbContext(DbContextOptions<TimewasterDbContext> options) 
             : base(options)
         {
         }
@@ -24,7 +24,6 @@ namespace Timewaster.Infrastructure.DataAccess
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Sprint> Sprints { get; set; }
         public DbSet<Team> Teams { get; set; }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
