@@ -7,7 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timewaster.Core.Interfaces.Services;
 using Timewaster.Core.ValueObjects;
+using Timewaster.Web.Converters;
 using Timewaster.Web.Models;
+using Timewaster.Web.ViewModels;
 
 namespace Timewaster.Web.Controllers
 {
@@ -32,10 +34,15 @@ namespace Timewaster.Web.Controllers
             return RedirectToAction("Index", "DashboardController");
         }
 
-        public async Task<IActionResult> SignUp(SignUpData signUpData)
+        public async Task<IActionResult> SignUp(SignUpViewModel viewModel)
         {
+            if (ModelState.IsValid)
+            {
+                _ = await _userService.SignUp(viewModel.ViewModelToEntity());
+                return RedirectToAction(nameof(Index));
+            }
 
-            return RedirectToAction(nameof(Index));
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
